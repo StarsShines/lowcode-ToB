@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": ["ESNext", "DOM"],
+    "skipLibCheck": true,
+    "noEmit": true,
+    "baseUrl": ".", // ++ 解析非相对模块的基地址，默认是当前目录
+    // "types": ["element-plus/global"],
+    "paths": {
+      // ++ 路径映射，相对于baseUrl
+      "@/*": ["src/*"]
+    }
+  },
+  "exclude": ["dist", "node_modules"], // ++ exclude-表示编译器需要排除的文件或文件夹 路径，根据自己的项目情况配置
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
