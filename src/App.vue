@@ -14,6 +14,7 @@ import { provide } from 'vue';
 import { registerComponentsSchema } from '@/utils/registerSchema';
 
 const { initializing, fields } = registerComponentsSchema();
+console.log(initializing);
 
 provide('$initializing', initializing);
 provide('$fields', fields);

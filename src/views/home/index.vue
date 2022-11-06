@@ -11,7 +11,7 @@
     <pageHeader />
     <div class="page-body">
       我是首页
-      <!-- <control /> -->
+      <control />
     </div>
   </div>
 </template>

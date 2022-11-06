@@ -8,14 +8,14 @@
 
 export const registerComponentsSchema = () => {
   // 获取所有自定义组件schema
-  const files: any = import.meta.glob('@/material/**/*.json', { eager: true });
+  const files: any = import.meta.glob('@material/**/*.json', { eager: true });
   let fields: any = {};
   let initializing: any = [];
-  files.keys().forEach((key: any) => {
-    const [, name] = key.split('/');
-    let config = { component: name, ...files(key) };
-    console.log(config);
-
+  // console.log(files);
+  Object.keys(files).forEach((key: any) => {
+    const [, , , name] = key.split('/');
+    let config = { component: name, ...files[key]['default'] };
+    // console.log(config);
     fields[name] = config.fields;
     initializing.push(initDefaulValue(config));
   });

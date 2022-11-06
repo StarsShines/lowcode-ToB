@@ -10,11 +10,13 @@
     <!-- 物料列表 -->
     <div class="control-models">
       <div>基础组件</div>
-      <draggable v-model="$initializing" :options="{ group: { name: 'itxst', pull: 'clone' }, sort: false }" :clone="handleClone" animation="300">
-        <div v-for="(item, index) in $initializing" :key="index" class="control-models-item">
-          <i class="iconfont" :class="item.icon"></i>
-          <span class="f13">{{ item.name }}</span>
-        </div>
+      <draggable :list="$initializing" :group="{ name: 'itxst', pull: 'clone' }" :sort="false" :clone="handleClone" animation="300">
+        <template #item="{ element }">
+          <div class="control-models-item">
+            <i class="iconfont" :class="element.icon"></i>
+            <span class="f13">{{ element.name }}</span>
+          </div>
+        </template>
       </draggable>
     </div>
 
@@ -28,64 +30,46 @@
           <!-- <control-widget :widgets.sync="widgets" /> -->
 
           <!-- 递归可嵌套物料 -->
-          <control-nest-widget :widgets.sync="widgets" />
+          <!-- <control-nest-widget :widgets.sync="widgets" /> -->
         </div>
       </div>
     </div>
 
     <!-- 物料配置 -->
     <div class="control-config">
-      <template v-if="curComponent">
-        <custom-schema-template :schema="curSchema" v-model="curComponent"></custom-schema-template>
+      <!-- <template v-if="curComponent"> -->
+      <!-- <custom-schema-template :schema="curSchema" v-model="curComponent"></custom-schema-template> -->
 
-        <div>
-          <h4 class="f-theme mt10 mb10">当前物料数据</h4>
-          {{ curComponent }}
-        </div>
-      </template>
+      <div>
+        <h4 class="f-theme mt10 mb10">当前物料数据</h4>
+        {{ curComponent }}
+      </div>
+      <!-- </template> -->
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import draggable from 'vuedraggable';
-import { getCurrentInstance } from 'vue';
 import { inject } from 'vue';
-const $initializing = inject('inject');
-</script>
+import { deepClone, getRandomCode } from '@/utils/utils';
 
-<script>
-export default {
-  name: 'Control',
+const $initializing: any = inject('$initializing');
+const $fields: any = inject('$fields');
+const curComponent: any = $ref(null);
+console.log($initializing);
+//可嵌套物料
+const widgets: any = $ref([]);
 
-  provide() {
-    return {
-      chontrol: this,
-    };
-  },
-
-  data() {
-    return {
-      widgets: [],
-      curComponent: undefined,
-    };
-  },
-
-  computed: {
-    curSchema() {
-      return this.$fields[this.curComponent.component];
-    },
-  },
-
-  methods: {
-    // 复制物料
-    handleClone(model) {
-      return {
-        ...this._.cloneDeep(model),
-        id: this.$getRandomCode(8),
-      };
-    },
-  },
+const curSchema = $computed(() => {
+  return $fields[curComponent.component];
+});
+// 复制物料
+const handleClone = (original: any) => {
+  return {
+    ...deepClone(original),
+    id: getRandomCode(8),
+  };
 };
 </script>
 
