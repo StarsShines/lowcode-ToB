@@ -8,9 +8,13 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
+import Icons from 'unplugin-icons/vite';
+import IconsResolver from 'unplugin-icons/resolver';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+
+const pathSrc = resolve(__dirname, 'src');
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,16 +23,31 @@ export default defineConfig({
       reactivityTransform: true,
     }),
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [
+        ElementPlusResolver(),
+        IconsResolver({
+          prefix: 'Icon',
+        }),
+      ],
+      dts: resolve(pathSrc, 'auto-imports.d.ts'),
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [
+        IconsResolver({
+          enabledCollections: ['ep'],
+        }),
+        ElementPlusResolver(),
+      ],
+      dts: resolve(pathSrc, 'components.d.ts'),
+    }),
+    Icons({
+      autoInstall: true,
     }),
   ],
   resolve: {
     // ++ 配置resolve.alias
     alias: {
-      '@': resolve(__dirname, 'src'),
+      '@': pathSrc,
       '@api': resolve(__dirname, 'src/service/api'),
       '@material': resolve(__dirname, 'src/material-components'),
       '@materialTemplate': resolve(__dirname, 'src/material-template'),

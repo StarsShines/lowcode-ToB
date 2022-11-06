@@ -3,7 +3,7 @@
  * @Date: 2022-11-04 11:23:52
  * @LastEditors: M.H
  * @LastEditTime: 2022-11-04 18:27:57
- * @Description: 请填写简介
+ * @Description: 控制器
 -->
 <template>
   <div class="control">
@@ -13,7 +13,10 @@
       <draggable :list="$initializing" :group="{ name: 'itxst', pull: 'clone' }" :sort="false" :clone="handleClone" animation="300">
         <template #item="{ element }">
           <div class="control-models-item">
-            <i class="iconfont" :class="element.icon"></i>
+            <span class="iconify-inline" data-icon="IEpBox"></span>
+
+            <el-icon :size="20" color="#000000"> <component is="i-ep-box"></component></el-icon>
+            <el-icon :size="20" color="#000000"> <i-ep-box></i-ep-box></el-icon>
             <span class="f13">{{ element.name }}</span>
           </div>
         </template>
