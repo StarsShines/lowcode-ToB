@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-10-31 16:49:32
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-04 18:18:30
+ * @LastEditTime: 2022-11-07 11:44:42
  * @Description: 请填写简介
 -->
 
@@ -10,7 +10,6 @@
   <div class="page">
     <pageHeader />
     <div class="page-body">
-      我是首页
       <control />
     </div>
   </div>

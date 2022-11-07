@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-01 16:30:34
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-04 11:18:37
+ * @LastEditTime: 2022-11-07 14:24:34
  * @Description: 头部文件
 -->
 <template>
@@ -49,5 +49,6 @@ const toSchema = () => {
   padding: 0 20px;
   background: #fff;
   box-shadow: 0 4px 6px 0 rgba(12, 31, 80, 0.04);
+  box-sizing: border-box;
 }
 </style>

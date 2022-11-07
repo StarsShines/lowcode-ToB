@@ -2,27 +2,40 @@
  * @Author: M.H
  * @Date: 2022-11-04 11:23:52
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-04 18:27:57
+ * @LastEditTime: 2022-11-07 18:25:40
  * @Description: 控制器
 -->
 <template>
   <div class="control">
     <!-- 物料列表 -->
-    <div class="control-models">
-      <div>基础组件</div>
-      <draggable :list="$initializing" :group="{ name: 'itxst', pull: 'clone' }" :sort="false" :clone="handleClone" animation="300">
-        <template #item="{ element }">
-          <div class="control-models-item">
-            <span class="iconify-inline" data-icon="IEpBox"></span>
-
-            <el-icon :size="20" color="#000000"> <component is="i-ep-box"></component></el-icon>
-            <el-icon :size="20" color="#000000"> <i-ep-box></i-ep-box></el-icon>
-            <span class="f13">{{ element.name }}</span>
-          </div>
-        </template>
-      </draggable>
-    </div>
-
+    <el-scrollbar style="height: calc(100vh - 60px)">
+      <div class="control-models">
+        <el-collapse v-model="activeNames" @change="handleChange">
+          <el-collapse-item title="基础组件" name="basic">
+            <draggable :list="$material.basic.$initializing" :group="{ name: 'group', pull: 'clone', put: false }" item-key="id" :sort="false" :clone="handleClone" :animation="300">
+              <template #item="{ element }">
+                <div class="control-models-item">
+                  <!-- <el-icon><Plus /></el-icon> -->
+                  <el-icon :size="13"><component :is="element.icon"></component></el-icon>
+                  <span class="title-text">{{ element.name }}</span>
+                </div>
+              </template>
+            </draggable>
+          </el-collapse-item>
+          <el-collapse-item title="搜索组件" name="search">
+            <draggable :list="$material.search.$initializing" :group="{ name: 'group', pull: 'clone', put: false }" item-key="id" :sort="false" :clone="handleClone" :animation="300">
+              <template #item="{ element }">
+                <div class="control-models-item">
+                  <!-- <el-icon><Plus /></el-icon> -->
+                  <el-icon :size="13"><component :is="element.icon"></component></el-icon>
+                  <span class="title-text">{{ element.name }}</span>
+                </div>
+              </template>
+            </draggable>
+          </el-collapse-item>
+        </el-collapse>
+      </div>
+    </el-scrollbar>
     <!-- 页面面板 -->
     <div class="control-page">
       <div class="panel">
@@ -33,7 +46,7 @@
           <!-- <control-widget :widgets.sync="widgets" /> -->
 
           <!-- 递归可嵌套物料 -->
-          <!-- <control-nest-widget :widgets.sync="widgets" /> -->
+          <ControlTemplate v-model:widgets="widgets" :isWidget="false" />
         </div>
       </div>
     </div>
@@ -56,17 +69,26 @@
 import draggable from 'vuedraggable';
 import { inject } from 'vue';
 import { deepClone, getRandomCode } from '@/utils/utils';
+import ControlTemplate from './ControlTemplate.vue';
+import { watch } from 'vue';
 
-const $initializing: any = inject('$initializing');
+const $material: any = inject('$material');
 const $fields: any = inject('$fields');
 const curComponent: any = $ref(null);
-console.log($initializing);
-//可嵌套物料
-const widgets: any = $ref([]);
 
+const activeNames = $ref(['basic']);
+
+//可嵌套物料
+let widgets = $ref<any[]>([]);
 const curSchema = $computed(() => {
   return $fields[curComponent.component];
 });
+
+//面板展开
+const handleChange = (val: string[]) => {
+  console.log(val);
+};
+
 // 复制物料
 const handleClone = (original: any) => {
   return {
@@ -74,41 +96,45 @@ const handleClone = (original: any) => {
     id: getRandomCode(8),
   };
 };
+
+const onEnd = () => {};
 </script>
 
 <style lang="scss" scoped>
 .control {
   display: flex;
   height: calc(100vh - 60px);
+  box-sizing: border-box;
 
   .control-models {
     width: 236px;
-    height: calc(100vh - 60px);
+    height: auto;
     padding: 10px 20px;
     background: #fff;
-
+    box-sizing: border-box;
     .control-models-item {
       display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      width: 90px; /*no*/
-      padding: 15px 0; /*no*/
-      font-size: 12px; /*no*/
+      width: 100%; /*no*/
+      padding: 5px 12px; /*no*/
+      font-size: 14px; /*no*/
       color: #666;
+      height: 30px;
+      line-height: 30px;
       cursor: pointer;
-
-      i {
-        font-size: 29px; /*no*/
-        margin-top: 5px; /*no*/
-        margin-bottom: 10px; /*no*/
-      }
 
       &:hover {
         color: #fff !important;
         background: $color-theme;
-        .canvas-left-item-type {
+        .canvas-left-item-type,
+        .el-icon {
           color: #fff;
         }
+      }
+      .el-icon {
+        margin-top: 8px;
+      }
+      .title-text {
+        margin-left: 5px;
       }
     }
   }
@@ -119,6 +145,7 @@ const handleClone = (original: any) => {
     flex: 1;
     height: 100%;
     overflow: auto;
+    box-sizing: border-box;
 
     .panel {
       width: 100%;
@@ -140,6 +167,7 @@ const handleClone = (original: any) => {
     animation-duration: 0.2s;
     padding: 10px;
     background: #fff;
+    box-sizing: border-box;
   }
 }
 </style>

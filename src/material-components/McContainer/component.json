@@ -1,6 +1,6 @@
 {
   "name": "容器",
-  "icon": "box",
+  "icon": "Box",
   "children": [],
   "fields": {
     "padding": {
@@ -8,5 +8,6 @@
       "type": "number",
       "value": 0
     }
-  }
+  },
+  "group": ["basic", "search"]
 }

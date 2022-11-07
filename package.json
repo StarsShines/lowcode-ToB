@@ -15,7 +15,6 @@
     "element-plus": "^2.2.19",
     "sass": "^1.55.0",
     "unplugin-auto-import": "^0.11.4",
-    "unplugin-icons": "^0.14.13",
     "unplugin-vue-components": "^0.22.9",
     "vue": "^3.2.41",
     "vue-router": "4",

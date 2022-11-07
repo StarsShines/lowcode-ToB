@@ -1,6 +1,6 @@
 {
   "name": "标题",
-  "icon": "icon-biaotizujian",
+  "icon": "DocumentAdd",
   "fields": {
     "title": {
       "label": "标题",
@@ -40,5 +40,6 @@
         }
       }
     }
-  }
+  },
+  "group": ["basic"]
 }

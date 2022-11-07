@@ -2,14 +2,12 @@
  * @Author: M.H
  * @Date: 2022-10-31 15:39:05
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-04 11:29:08
+ * @LastEditTime: 2022-11-07 16:45:09
  * @Description: 请填写简介
  */
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
-import Icons from 'unplugin-icons/vite';
-import IconsResolver from 'unplugin-icons/resolver';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
@@ -23,25 +21,14 @@ export default defineConfig({
       reactivityTransform: true,
     }),
     AutoImport({
-      resolvers: [
-        ElementPlusResolver(),
-        IconsResolver({
-          prefix: 'Icon',
-        }),
-      ],
+      resolvers: [ElementPlusResolver()],
       dts: resolve(pathSrc, 'auto-imports.d.ts'),
     }),
     Components({
-      resolvers: [
-        IconsResolver({
-          enabledCollections: ['ep'],
-        }),
-        ElementPlusResolver(),
-      ],
+      dirs: ['src/material-components'],
+      resolvers: [ElementPlusResolver()],
+
       dts: resolve(pathSrc, 'components.d.ts'),
-    }),
-    Icons({
-      autoInstall: true,
     }),
   ],
   resolve: {
