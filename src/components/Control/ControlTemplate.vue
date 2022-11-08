@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-07 15:46:08
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-08 17:29:41
+ * @LastEditTime: 2022-11-08 17:54:28
  * @Description: 物料面板
 -->
 <template>
@@ -36,7 +36,6 @@ const { isWidget = false, modules = [] } = defineProps<Props>();
 let list: any[] = $ref(modules);
 
 watch(list, (newVal) => {
-  console.log(123123, newVal);
   ControlModules.mutations.CHANGE_MODULES(newVal);
 });
 </script>

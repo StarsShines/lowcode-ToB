@@ -2,15 +2,20 @@
  * @Author: M.H
  * @Date: 2022-11-08 15:54:06
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-08 16:28:50
+ * @LastEditTime: 2022-11-08 18:06:36
  * @Description: 指令集
  */
 import { deepClone } from '@/utils/utils';
 import { onUnmounted } from 'vue';
+import { ControlModules } from './controlModule';
+
+// let datas: any[] = $computed(() => {
+//   return ControlModules.getters.getModules;
+// });
 
 export const useCommand = (data: any) => {
   //指针
-  const state = {
+  let state = {
     // 前进后退需要指针
     current: -1, // 前进后退的索引值
     queue: [], //  存放所有的操作命令
@@ -56,15 +61,15 @@ export const useCommand = (data: any) => {
     pushQueue: true,
     execute(newValue: any) {
       let state = {
-        before: data.value, // 当前的值
+        before: data, // 当前的值
         after: newValue, // 新值
       };
       return {
         redo: () => {
-          data.value = state.after;
+          data = state.after;
         },
         undo: () => {
-          data.value = state.before;
+          data = state.before;
         },
       };
     },

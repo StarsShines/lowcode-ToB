@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-04 11:23:52
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-08 17:36:31
+ * @LastEditTime: 2022-11-08 18:35:14
  * @Description: 控制器
 -->
 <template>
@@ -12,7 +12,7 @@
       <div class="control-models">
         <el-collapse v-model="activeNames" @change="handleChange">
           <el-collapse-item title="基础组件" name="basic">
-            <draggable :list="$material.basic.$initializing" :group="{ name: 'group', pull: 'clone', put: false }" item-key="id" :sort="false" :clone="handleClone" :animation="300">
+            <draggable :list="$material.basic.$initializing" :group="{ name: 'group', pull: 'clone', put: false }" item-key="id" :sort="false" :clone="handleClone" :animation="300" @end="onEnd">
               <template #item="{ element }">
                 <div class="control-models-item">
                   <!-- <el-icon><Plus /></el-icon> -->
@@ -66,7 +66,7 @@ import { inject } from 'vue';
 import { deepClone, getRandomCode } from '@/utils/utils';
 import ControlTemplate from './ControlTemplate.vue';
 import { ControlModules } from '@/vuex/controlModule';
-import { watch } from 'vue';
+import { useCommand } from '@/vuex/commandModule';
 
 const $material: any = inject('$material');
 const $fields: any = inject('$fields');
@@ -78,12 +78,13 @@ const activeNames = $ref(['basic']);
 
 //可嵌套物料
 let modules: any[] = $computed(() => {
-  console.log(ControlModules.getters.getModules);
   return ControlModules.getters.getModules;
 });
 const curSchema = $computed(() => {
   return $fields[curComponent.component];
 });
+
+let { commands } = useCommand(modules);
 
 //面板展开
 const handleChange = (val: string[]) => {
@@ -97,8 +98,10 @@ const handleClone = (original: any) => {
     id: getRandomCode(8),
   };
 };
-
-const onEnd = () => {};
+``;
+const onEnd = () => {
+  (commands as any).updateData(modules);
+};
 </script>
 
 <style lang="scss" scoped>
