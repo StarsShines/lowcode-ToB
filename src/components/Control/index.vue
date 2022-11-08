@@ -2,13 +2,13 @@
  * @Author: M.H
  * @Date: 2022-11-04 11:23:52
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-07 18:25:40
+ * @LastEditTime: 2022-11-08 17:36:31
  * @Description: 控制器
 -->
 <template>
   <div class="control">
     <!-- 物料列表 -->
-    <el-scrollbar style="height: calc(100vh - 60px)">
+    <el-scrollbar style="height: calc(100vh - 60px); box-shadow: 2px 0px 20px #ddd">
       <div class="control-models">
         <el-collapse v-model="activeNames" @change="handleChange">
           <el-collapse-item title="基础组件" name="basic">
@@ -40,13 +40,8 @@
     <div class="control-page">
       <div class="panel">
         <div class="panel-content">
-          <!-- 可根据实际需求选择是否需要物料组件 -->
-
-          <!-- 不可嵌套物料 -->
-          <!-- <control-widget :widgets.sync="widgets" /> -->
-
-          <!-- 递归可嵌套物料 -->
-          <ControlTemplate v-model:widgets="widgets" :isWidget="false" />
+          <!-- 递归物料组件 -->
+          <ControlTemplate :modules="modules" :isWidget="false" />
         </div>
       </div>
     </div>
@@ -70,16 +65,22 @@ import draggable from 'vuedraggable';
 import { inject } from 'vue';
 import { deepClone, getRandomCode } from '@/utils/utils';
 import ControlTemplate from './ControlTemplate.vue';
+import { ControlModules } from '@/vuex/controlModule';
 import { watch } from 'vue';
 
 const $material: any = inject('$material');
 const $fields: any = inject('$fields');
-const curComponent: any = $ref(null);
 
+const curComponent: any = $computed(() => {
+  return ControlModules.getters.getCurComponent;
+});
 const activeNames = $ref(['basic']);
 
 //可嵌套物料
-let widgets = $ref<any[]>([]);
+let modules: any[] = $computed(() => {
+  console.log(ControlModules.getters.getModules);
+  return ControlModules.getters.getModules;
+});
 const curSchema = $computed(() => {
   return $fields[curComponent.component];
 });
@@ -149,11 +150,9 @@ const onEnd = () => {};
 
     .panel {
       width: 100%;
-      max-width: 900px;
-
       .panel-content {
-        width: 375px;
-        margin: 50px auto;
+        width: calc(100% - 180px);
+        margin: 12px auto;
         background: #fff;
         box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.1);
       }

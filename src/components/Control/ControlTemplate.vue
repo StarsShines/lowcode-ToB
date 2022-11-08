@@ -2,43 +2,43 @@
  * @Author: M.H
  * @Date: 2022-11-07 15:46:08
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-07 18:46:34
+ * @LastEditTime: 2022-11-08 17:29:41
  * @Description: 物料面板
 -->
 <template>
-  <!-- <component :is="McContainer"></component> -->
   <draggable :list="list" group="group" item-key="id" :sort="false" ghost-class="ghost" chosen-class="chosen" :animation="300" :class="[isWidget ? 'nest-child' : 'nest-area']">
     <template #item="{ element }">
-      <component :is="GLOBAL_COMPONENTS[element.component]" v-bind="element">
-        <ControlTemplate v-model:widgets="element.childrens" :isWidget="true"></ControlTemplate>
-      </component>
+      <ControlShape :list="list" :modules="element">
+        <component :is="GLOBAL_COMPONENTS[element.component]" v-bind="element">
+          <control-template :modules="element.childrens" :isWidget="true"></control-template>
+        </component>
+      </ControlShape>
     </template>
   </draggable>
 </template>
 
 <script setup lang="ts">
 import draggable from 'vuedraggable';
-import { watchEffect, watch } from 'vue';
+import ControlShape from './ControlShape.vue';
+import { watch } from 'vue';
 import { inject } from 'vue';
+import { ControlModules } from '@/vuex/controlModule';
 const GLOBAL_COMPONENTS: any = inject('GLOBAL_COMPONENTS');
 
 interface Props {
   isWidget: Boolean;
-  widgets: any[];
+  modules: any[];
 }
-const { isWidget = false, widgets = [] } = defineProps<Props>();
-const $myemit = defineEmits(['update:widgets']);
+const { isWidget = false, modules = [] } = defineProps<Props>();
+// const props = defineProps<Props>();
+// const $myemit = defineEmits(['update:modules']);
 
-let list = $ref(widgets);
+let list: any[] = $ref(modules);
+
 watch(list, (newVal) => {
-  console.log(list);
-  console.log(widgets);
-  $myemit('update:widgets', newVal);
+  console.log(123123, newVal);
+  ControlModules.mutations.CHANGE_MODULES(newVal);
 });
-
-// const updataWidgets = (widget: any[]) => {
-//   emit('updataWidgets', widget);
-// };
 </script>
 
 <style lang="scss" scoped>
@@ -49,6 +49,7 @@ watch(list, (newVal) => {
 
 .nest-area {
   min-height: 600px;
+  height: calc(100vh - 85px);
 }
 
 .nest-none {

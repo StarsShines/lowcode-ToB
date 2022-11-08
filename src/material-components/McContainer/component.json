@@ -1,7 +1,7 @@
 {
   "name": "容器",
   "icon": "Box",
-  "children": [],
+  "childrens": [],
   "fields": {
     "padding": {
       "label": "上下间距",

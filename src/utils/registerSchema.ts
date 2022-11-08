@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-04 17:49:30
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-07 18:36:49
+ * @LastEditTime: 2022-11-08 17:07:18
  * @Description: 全局方法注册
  */
 
@@ -21,10 +21,11 @@ export const registerComponentsSchema = () => {
     let config = { component: name, ...files[key]['default'] };
     // console.log(config);
     fields[name] = config.fields;
-    initializing.push(initDefaulValue(config));
+    const modulesConfig = initDefaulValue(config);
+    initializing.push(modulesConfig);
     Object.keys(material).forEach((i: string) => {
       if (config.group.includes(i)) {
-        material[i]['$initializing'] ? material[i]['$initializing'].push(initDefaulValue(config)) : (material[i]['$initializing'] = [initDefaulValue(config)]);
+        material[i]['$initializing'] ? material[i]['$initializing'].push(modulesConfig) : (material[i]['$initializing'] = [modulesConfig]);
       }
     });
   });
@@ -33,8 +34,8 @@ export const registerComponentsSchema = () => {
 
 // 初始化组件初始数据
 const initDefaulValue = (config: any) => {
-  let { component, name, icon, fields } = config;
-  let temp = { component, name, icon };
+  let { component, name, icon, fields, childrens } = config;
+  let temp = { component, name, icon, childrens };
   setDefaultValue(fields, temp);
   return temp;
 };
