@@ -61,7 +61,7 @@
 
 <script setup lang="ts">
 import draggable from 'vuedraggable';
-import { inject } from 'vue';
+import { inject, computed } from 'vue';
 import { deepClone, getRandomCode } from '@/utils/utils';
 import ControlTemplate from './ControlTemplate.vue';
 import { useControlModules } from '@/vuex/useControlModule';
@@ -71,15 +71,18 @@ const $material: any = inject('$material');
 const $fields: any = inject('$fields');
 
 const curComponent: any = $computed(() => {
+  console.log('curComponent');
   return useControlModules.getters.getCurComponent;
 });
+
 const activeNames = $ref(['basic']);
 
 //可嵌套物料
 let modules: any[] = $computed(() => {
-  console.log('updata1', useControlModules.getters.getModules);
+  // console.log('updata1', useControlModules.getters.getModules);
   return useControlModules.getters.getModules;
 });
+
 let oldModules: any[] = $computed(() => {
   return useControlModules.getters.getOldModules;
 });
@@ -106,6 +109,8 @@ const onStart = () => {
 };
 const onEnd = () => {
   console.log('end', modules);
+  useControlModules.mutations.CHANGE_MODULES(modules);
+  // console.log('updata3', useControlModules.getters.getModules);
   state.commands.updateData(oldModules, modules);
 };
 </script>

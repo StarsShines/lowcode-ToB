@@ -19,6 +19,7 @@ interface StateProp {
   commandArray: any[];
   destroyArray: any[];
 }
+//指针
 export let state = reactive<StateProp>({
   // 前进后退需要指针
   current: -1, // 前进后退的索引值
@@ -29,9 +30,7 @@ export let state = reactive<StateProp>({
 });
 
 export const useCommand = () => {
-  //指针
-
-  //撤销指针
+  //前进指针
   registry(state, {
     name: 'redo',
     keyboard: 'ctrl+y',
@@ -47,7 +46,7 @@ export const useCommand = () => {
       };
     },
   });
-  //前进指针
+  //后退指针
   registry(state, {
     name: 'undo',
     keyboard: 'ctrl+z',
@@ -113,6 +112,6 @@ const registry = (state: any, command: any) => {
     }
     queue.push({ redo, undo }); // 保存指令的前进后退
     state.current = current + 1;
-    // console.log('queue', queue);
+    console.log('queue', state.current);
   };
 };

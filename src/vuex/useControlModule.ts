@@ -24,6 +24,7 @@ let getters: any = {
     return state.curComponent;
   }),
   getModules: computed(() => {
+    // console.log('getModules', state.modules);
     return state.modules;
   }),
   getOldModules: computed(() => {
@@ -36,6 +37,7 @@ let mutations: any = {
     state.curComponent = curComponent;
   },
   CHANGE_MODULES(modules: any[]) {
+    // console.log('CHANGE_MODULES', state.modules);
     state.modules = modules;
   },
   CHANGE_OLDMODULES(oldModules: any[]) {

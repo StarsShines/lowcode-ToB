@@ -9,8 +9,8 @@
   <div class="page-head">
     <span>可视化搭建平台</span>
     <div class="config-group">
-      <el-button size="small" @click="backFn">撤销</el-button>
-      <el-button size="small" @click="goFn">重做</el-button>
+      <el-button size="small" @click="backFn">后退一步</el-button>
+      <el-button size="small" @click="goFn">前进一步</el-button>
       <el-button size="small" @click="toEdit">{{ isEdit ? '预览' : '编辑' }}</el-button>
     </div>
     <el-button size="small" @click="toSchema">schema 生成器</el-button>
@@ -33,12 +33,9 @@ onMounted(() => {
 
 const backFn = () => {
   state.commands.undo();
-  console.log('datas', datas);
-  console.log('ss', state.queue);
 };
 const goFn = () => {
-  console.log('ss');
-  state.commands.undo();
+  state.commands.redo();
 };
 
 const router = useRouter();

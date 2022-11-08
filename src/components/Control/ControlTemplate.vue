@@ -28,23 +28,24 @@ interface Props {
   isWidget: Boolean;
   modules: any[];
 }
-const { isWidget = false, modules = [] } = defineProps<Props>();
-// const props = defineProps<Props>();
+// const { isWidget = false, modules } = defineProps<Props>();
+const props = defineProps<Props>();
 // const $myemit = defineEmits(['update:modules']);
 
 // let list: any[] = $ref(props.modules);
 let list: any[] = $computed(() => {
-  console.log('computed', modules);
-  return modules;
+  // console.log('computed');
+  return props.modules;
 });
 
-watch(
-  () => list,
-  (newVal) => {
-    console.log('watch', modules);
-    useControlModules.mutations.CHANGE_MODULES(newVal);
-  },
-);
+// watch(
+//   () => list,
+//   (newVal) => {
+//     console.log('watch', newVal);
+//     // useControlModules.mutations.CHANGE_MODULES(newVal);
+//   },
+//   { deep: true },
+// );
 </script>
 
 <style lang="scss" scoped>

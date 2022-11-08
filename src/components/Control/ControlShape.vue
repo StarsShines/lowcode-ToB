@@ -27,6 +27,7 @@
 <script setup lang="ts">
 import { useControlModules } from '@/vuex/useControlModule';
 import { onMounted } from 'vue';
+import { state } from '@/vuex/useCommandModule';
 
 interface Props {
   modules?: any;
@@ -56,6 +57,7 @@ const setcurComponent = (modules: any) => {
 };
 
 const delComponent = (list: any, id: string) => {
+  useControlModules.mutations.CHANGE_OLDMODULES(list);
   // 遍历查找目标下标
   let index = list.reduce((pre: any, cur: any, i: any) => {
     return cur.id == id ? i : pre;
@@ -75,6 +77,7 @@ const delComponent = (list: any, id: string) => {
   // console.log('del');
   useControlModules.mutations.CHANGE_MODULES(list);
   useControlModules.mutations.CHANGE_CURCOMPONENT('');
+  // state.commands.updateData(oldModules, list);
 };
 </script>
 
