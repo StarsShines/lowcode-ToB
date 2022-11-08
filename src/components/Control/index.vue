@@ -12,7 +12,7 @@
       <div class="control-models">
         <el-collapse v-model="activeNames" @change="handleChange">
           <el-collapse-item title="基础组件" name="basic">
-            <draggable :list="$material.basic.$initializing" :group="{ name: 'group', pull: 'clone', put: false }" item-key="id" :sort="false" :clone="handleClone" :animation="300" @end="onEnd">
+            <draggable :list="$material.basic.$initializing" :group="{ name: 'group', pull: 'clone', put: false }" item-key="id" :sort="false" :clone="handleClone" :animation="300" @start="onStart" @end="onEnd">
               <template #item="{ element }">
                 <div class="control-models-item">
                   <!-- <el-icon><Plus /></el-icon> -->
@@ -23,10 +23,9 @@
             </draggable>
           </el-collapse-item>
           <el-collapse-item title="搜索组件" name="search">
-            <draggable :list="$material.search.$initializing" :group="{ name: 'group', pull: 'clone', put: false }" item-key="id" :sort="false" :clone="handleClone" :animation="300">
+            <draggable :list="$material.search.$initializing" :group="{ name: 'group', pull: 'clone', put: false }" item-key="id" :sort="false" :clone="handleClone" :animation="300" @start="onStart" @end="onEnd">
               <template #item="{ element }">
                 <div class="control-models-item">
-                  <!-- <el-icon><Plus /></el-icon> -->
                   <el-icon :size="13"><component :is="element.icon"></component></el-icon>
                   <span class="title-text">{{ element.name }}</span>
                 </div>
@@ -65,26 +64,29 @@ import draggable from 'vuedraggable';
 import { inject } from 'vue';
 import { deepClone, getRandomCode } from '@/utils/utils';
 import ControlTemplate from './ControlTemplate.vue';
-import { ControlModules } from '@/vuex/controlModule';
-import { useCommand } from '@/vuex/commandModule';
+import { useControlModules } from '@/vuex/useControlModule';
+import { state } from '@/vuex/useCommandModule';
 
 const $material: any = inject('$material');
 const $fields: any = inject('$fields');
 
 const curComponent: any = $computed(() => {
-  return ControlModules.getters.getCurComponent;
+  return useControlModules.getters.getCurComponent;
 });
 const activeNames = $ref(['basic']);
 
 //可嵌套物料
 let modules: any[] = $computed(() => {
-  return ControlModules.getters.getModules;
+  console.log('updata1', useControlModules.getters.getModules);
+  return useControlModules.getters.getModules;
 });
+let oldModules: any[] = $computed(() => {
+  return useControlModules.getters.getOldModules;
+});
+
 const curSchema = $computed(() => {
   return $fields[curComponent.component];
 });
-
-let { commands } = useCommand(modules);
 
 //面板展开
 const handleChange = (val: string[]) => {
@@ -98,9 +100,13 @@ const handleClone = (original: any) => {
     id: getRandomCode(8),
   };
 };
-``;
+const onStart = () => {
+  console.log('start', modules);
+  useControlModules.mutations.CHANGE_OLDMODULES(deepClone(modules));
+};
 const onEnd = () => {
-  (commands as any).updateData(modules);
+  console.log('end', modules);
+  state.commands.updateData(oldModules, modules);
 };
 </script>
 

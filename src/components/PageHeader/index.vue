@@ -9,8 +9,8 @@
   <div class="page-head">
     <span>可视化搭建平台</span>
     <div class="config-group">
-      <el-button size="small" @click="commands.redo()">撤销</el-button>
-      <el-button size="small" @click="commands.undo()">重做</el-button>
+      <el-button size="small" @click="backFn">撤销</el-button>
+      <el-button size="small" @click="goFn">重做</el-button>
       <el-button size="small" @click="toEdit">{{ isEdit ? '预览' : '编辑' }}</el-button>
     </div>
     <el-button size="small" @click="toSchema">schema 生成器</el-button>
@@ -19,15 +19,27 @@
 
 <script setup lang="ts">
 import { useRouter, useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
-import { useCommand } from '@/vuex/commandModule';
-import { ControlModules } from '@/vuex/controlModule';
+import { useCommand, state } from '@/vuex/useCommandModule';
+import { onMounted, getCurrentInstance } from 'vue';
+import { useControlModules } from '@/vuex/useControlModule';
 let isEdit = $ref(true);
 let datas: any[] = $computed(() => {
-  return ControlModules.getters.getModules;
+  return useControlModules.getters.getModules;
+});
+const { ctx: _this }: any = getCurrentInstance();
+onMounted(() => {
+  useCommand();
 });
 
-let state = useCommand(datas);
-let commands: any = state.commands;
+const backFn = () => {
+  state.commands.undo();
+  console.log('datas', datas);
+  console.log('ss', state.queue);
+};
+const goFn = () => {
+  console.log('ss');
+  state.commands.undo();
+};
 
 const router = useRouter();
 

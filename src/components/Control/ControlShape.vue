@@ -25,7 +25,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ControlModules } from '@/vuex/controlModule';
+import { useControlModules } from '@/vuex/useControlModule';
 import { onMounted } from 'vue';
 
 interface Props {
@@ -43,7 +43,7 @@ onMounted(() => {
 });
 
 const curComponent: any = $computed(() => {
-  return ControlModules.getters.getCurComponent;
+  return useControlModules.getters.getCurComponent;
 });
 
 const isCurComponent = (id: any) => {
@@ -52,7 +52,7 @@ const isCurComponent = (id: any) => {
 
 // 选中物料
 const setcurComponent = (modules: any) => {
-  ControlModules.mutations.CHANGE_CURCOMPONENT(modules);
+  useControlModules.mutations.CHANGE_CURCOMPONENT(modules);
 };
 
 const delComponent = (list: any, id: string) => {
@@ -72,8 +72,9 @@ const delComponent = (list: any, id: string) => {
         delComponent(c.children, id);
       });
   }
-  ControlModules.mutations.CHANGE_MODULES(list);
-  ControlModules.mutations.CHANGE_CURCOMPONENT('');
+  // console.log('del');
+  useControlModules.mutations.CHANGE_MODULES(list);
+  useControlModules.mutations.CHANGE_CURCOMPONENT('');
 };
 </script>
 

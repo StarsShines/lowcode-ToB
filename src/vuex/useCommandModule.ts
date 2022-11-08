@@ -6,23 +6,31 @@
  * @Description: 指令集
  */
 import { deepClone } from '@/utils/utils';
-import { onUnmounted } from 'vue';
-import { ControlModules } from './controlModule';
+import { onUnmounted, reactive } from 'vue';
+import { useControlModules } from './useControlModule';
 
 // let datas: any[] = $computed(() => {
 //   return ControlModules.getters.getModules;
 // });
+interface StateProp {
+  current: number;
+  queue: any[];
+  commands: any;
+  commandArray: any[];
+  destroyArray: any[];
+}
+export let state = reactive<StateProp>({
+  // 前进后退需要指针
+  current: -1, // 前进后退的索引值
+  queue: [], //  存放所有的操作命令
+  commands: {}, // 制作命令和执行功能一个映射表  undo : ()=>{}  redo:()=>{}
+  commandArray: [], // 存放所有的命令
+  destroyArray: [],
+});
 
-export const useCommand = (data: any) => {
+export const useCommand = () => {
   //指针
-  let state = {
-    // 前进后退需要指针
-    current: -1, // 前进后退的索引值
-    queue: [], //  存放所有的操作命令
-    commands: {}, // 制作命令和执行功能一个映射表  undo : ()=>{}  redo:()=>{}
-    commandArray: [], // 存放所有的命令
-    destroyArray: [],
-  };
+
   //撤销指针
   registry(state, {
     name: 'redo',
@@ -59,17 +67,21 @@ export const useCommand = (data: any) => {
   registry(state, {
     name: 'updateData', // 更新整个容器
     pushQueue: true,
-    execute(newValue: any) {
+    execute(oldValue: any, newValue: any) {
+      console.log('1111', oldValue);
+      console.log('2222', newValue);
       let state = {
-        before: data, // 当前的值
-        after: newValue, // 新值
+        before: deepClone(oldValue), // 当前的值
+        after: deepClone(newValue), // 新值
       };
       return {
         redo: () => {
-          data = state.after;
+          console.log('redo');
+          useControlModules.mutations.CHANGE_MODULES(state.after);
         },
         undo: () => {
-          data = state.before;
+          console.log('undo');
+          useControlModules.mutations.CHANGE_MODULES(state.before);
         },
       };
     },
@@ -86,7 +98,7 @@ const registry = (state: any, command: any) => {
   state.commands[command.name] = (...args: any) => {
     // 命令名字对应执行函数
     const { redo, undo } = command.execute(...args);
-    redo();
+    command.name != 'updateData' && redo();
     if (!command.pushQueue) {
       // 不需要放到队列中直接跳过即可
       return;
@@ -101,6 +113,6 @@ const registry = (state: any, command: any) => {
     }
     queue.push({ redo, undo }); // 保存指令的前进后退
     state.current = current + 1;
-    console.log(queue);
+    // console.log('queue', queue);
   };
 };

@@ -20,9 +20,8 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable';
 import ControlShape from './ControlShape.vue';
-import { watch } from 'vue';
-import { inject } from 'vue';
-import { ControlModules } from '@/vuex/controlModule';
+import { watch, inject } from 'vue';
+import { useControlModules } from '@/vuex/useControlModule';
 const GLOBAL_COMPONENTS: any = inject('GLOBAL_COMPONENTS');
 
 interface Props {
@@ -33,11 +32,19 @@ const { isWidget = false, modules = [] } = defineProps<Props>();
 // const props = defineProps<Props>();
 // const $myemit = defineEmits(['update:modules']);
 
-let list: any[] = $ref(modules);
-
-watch(list, (newVal) => {
-  ControlModules.mutations.CHANGE_MODULES(newVal);
+// let list: any[] = $ref(props.modules);
+let list: any[] = $computed(() => {
+  console.log('computed', modules);
+  return modules;
 });
+
+watch(
+  () => list,
+  (newVal) => {
+    console.log('watch', modules);
+    useControlModules.mutations.CHANGE_MODULES(newVal);
+  },
+);
 </script>
 
 <style lang="scss" scoped>

@@ -7,18 +7,14 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    Control: typeof import('./components/Control/index.vue')['default']
-    ControlTemplate: typeof import('./components/Control/ControlTemplate.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCollapse: typeof import('element-plus/es')['ElCollapse']
     ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
-    IEpBox: typeof import('~icons/ep/box')['default']
     McContainer: typeof import('./material-components/McContainer/index.vue')['default']
     McTab: typeof import('./material-components/McTab/index.vue')['default']
     McTitle: typeof import('./material-components/McTitle/index.vue')['default']
-    PageHeader: typeof import('./components/PageHeader/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

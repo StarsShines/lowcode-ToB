@@ -6,15 +6,17 @@
  * @Description: 请填写简介
  */
 import { reactive, readonly, computed } from 'vue';
-
+import { deepClone } from '@/utils/utils';
 interface ControlProp {
   curComponent?: any;
   modules?: any[];
+  oldModules?: any[];
 }
 
 let state: ControlProp = reactive({
   curComponent: undefined,
   modules: [],
+  oldModules: [],
 });
 
 let getters: any = {
@@ -23,6 +25,9 @@ let getters: any = {
   }),
   getModules: computed(() => {
     return state.modules;
+  }),
+  getOldModules: computed(() => {
+    return state.oldModules;
   }),
 };
 
@@ -33,9 +38,12 @@ let mutations: any = {
   CHANGE_MODULES(modules: any[]) {
     state.modules = modules;
   },
+  CHANGE_OLDMODULES(oldModules: any[]) {
+    state.oldModules = oldModules;
+  },
 };
 
-export const ControlModules = {
+export const useControlModules = {
   state: readonly(state),
   getters: readonly(getters),
   mutations,
