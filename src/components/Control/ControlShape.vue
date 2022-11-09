@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-08 09:56:24
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-09 11:08:55
+ * @LastEditTime: 2022-11-09 17:00:25
  * @Description: 面板控制器
 -->
 <template>
@@ -15,7 +15,7 @@
     <!-- 组件工具栏 -->
     <div v-if="isShow" class="shape-tab">
       <template v-if="isCurComponent(modules.id)">
-        <el-icon class="iconfont icon-shanchu tab-icon f16" @click.stop="delComponent($modules, curComponent.id)"><DeleteFilled /></el-icon>
+        <el-icon class="iconfont icon-shanchu tab-icon f16" @click.stop="commitOldData(deepClone($modules), curComponent.id)"><DeleteFilled /></el-icon>
       </template>
 
       <span v-else>{{ modules.name }}</span>
@@ -29,15 +29,15 @@ import { useControlModules } from '@/vuex/useControlModule';
 import { onMounted } from 'vue';
 import { deepClone } from '@/utils/utils';
 import { state } from '@/vuex/useCommandModule';
+
 interface Props {
   modules?: any;
-  list?: any;
 }
-const { modules = {}, list = [] } = defineProps<Props>();
+const { modules = {} } = defineProps<Props>();
 
 let $modules: any[] = $computed(() => {
-  // console.log('computed');
-  return list;
+  // console.log('updata1', useControlModules.getters.getModules);
+  return useControlModules.getters.getModules;
 });
 
 // let $modules = $ref(list);
@@ -62,12 +62,23 @@ let oldModules: any[] = $computed(() => {
 
 // 选中物料
 const setcurComponent = (modules: any) => {
+  console.log('lists', $modules);
   useControlModules.mutations.CHANGE_CURCOMPONENT(modules);
+};
+//上报历史数据
+const commitOldData = (list: any, id: string) => {
+  useControlModules.mutations.CHANGE_OLDMODULES(list);
+  let _list = deepClone(list);
+
+  //递归删除物料
+  let newList = delComponent(_list, id);
+  //上报并更新数据
+  useControlModules.mutations.CHANGE_MODULES(newList);
+  useControlModules.mutations.CHANGE_CURCOMPONENT('');
+  state.commands.updateData(oldModules, newList);
 };
 //删除物料模块
 const delComponent = (list: any, id: string) => {
-  console.log('lists', list);
-  useControlModules.mutations.CHANGE_OLDMODULES(deepClone(list));
   // 遍历查找目标下标
   let index = list.reduce((pre: any, cur: any, i: any) => {
     return cur.id == id ? i : pre;
@@ -79,15 +90,12 @@ const delComponent = (list: any, id: string) => {
   } else {
     // 递归子物料
     list
-      .filter((c: any) => c.children)
+      .filter((c: any) => c.childrens)
       .forEach((c: any) => {
-        delComponent(c.children, id);
+        delComponent(c.childrens, id);
       });
   }
-  // console.log('del');
-  useControlModules.mutations.CHANGE_MODULES(list);
-  useControlModules.mutations.CHANGE_CURCOMPONENT('');
-  state.commands.updateData(oldModules, list);
+  return list;
 };
 </script>
 

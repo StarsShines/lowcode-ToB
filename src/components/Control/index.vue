@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-04 11:23:52
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-09 10:30:32
+ * @LastEditTime: 2022-11-09 17:25:24
  * @Description: 控制器
 -->
 <template>
@@ -50,6 +50,18 @@
               </template>
             </draggable>
           </el-collapse-item>
+          <el-collapse-item title="视图大纲" name="views">
+            <el-tree
+              :allow-drop="allowDrop"
+              :data="treeData"
+              :props="{ label: 'name', children: 'childrens' }"
+              draggable
+              default-expand-all
+              node-key="id"
+              @node-drag-end="handleDragEnd"
+              @node-drop="handleDrop"
+            />
+          </el-collapse-item>
         </el-collapse>
       </div>
     </el-scrollbar>
@@ -78,6 +90,9 @@
 </template>
 
 <script setup lang="ts">
+import type Node from 'element-plus/es/components/tree/src/model/node';
+import type { DragEvents } from 'element-plus/es/components/tree/src/model/useDragNode';
+
 import draggable from 'vuedraggable';
 import { inject, computed } from 'vue';
 import { deepClone, getRandomCode } from '@/utils/utils';
@@ -93,11 +108,10 @@ const curComponent: any = $computed(() => {
   return useControlModules.getters.getCurComponent;
 });
 
-const activeNames = $ref(['basic']);
+const activeNames = $ref(['basic', 'views']);
 
 //可嵌套物料
 let modules: any[] = $computed(() => {
-  // console.log('updata1', useControlModules.getters.getModules);
   return useControlModules.getters.getModules;
 });
 //实时获取指针队列历史数据
@@ -121,6 +135,11 @@ const handleClone = (original: any) => {
     id: getRandomCode(8),
   };
 };
+
+let treeData = computed(() => {
+  return useControlModules.getters.getModules;
+});
+
 //拖拽开始记录历史数据
 const onStart = () => {
   console.log('start', modules);
@@ -132,6 +151,25 @@ const onEnd = () => {
   useControlModules.mutations.CHANGE_MODULES(modules);
   // console.log('updata3', useControlModules.getters.getModules);
   state.commands.updateData(oldModules, modules);
+};
+
+//树形事件
+//判断是否能成为拖动位置
+const allowDrop = (draggingNode: Node, dropNode: Node, type: any) => {
+  if (dropNode.data.label === 'Level two 3-1') {
+    return type !== 'inner';
+  } else {
+    return true;
+  }
+};
+
+//拖拽结束
+const handleDragEnd = (draggingNode: Node, dropNode: Node, dropType: any, ev: DragEvents) => {
+  console.log('tree drag end:', dropNode && dropNode.label, dropType);
+};
+//拖拽完成
+const handleDrop = (draggingNode: Node, dropNode: Node, dropType: any, ev: DragEvents) => {
+  console.log('tree drop:', dropNode.label, dropType);
 };
 </script>
 

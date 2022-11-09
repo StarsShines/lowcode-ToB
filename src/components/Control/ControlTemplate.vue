@@ -2,13 +2,13 @@
  * @Author: M.H
  * @Date: 2022-11-07 15:46:08
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-09 10:29:42
+ * @LastEditTime: 2022-11-09 16:20:35
  * @Description: 物料面板
 -->
 <template>
   <draggable :list="list" group="group" item-key="id" :sort="false" ghost-class="ghost" chosen-class="chosen" :animation="300" :class="[isWidget ? 'nest-child' : 'nest-area']">
     <template #item="{ element }">
-      <ControlShape :list="list" :modules="element">
+      <ControlShape :modules="element">
         <component :is="GLOBAL_COMPONENTS[element.component]" v-bind="element">
           <control-template :modules="element.childrens" :isWidget="true"></control-template>
         </component>
