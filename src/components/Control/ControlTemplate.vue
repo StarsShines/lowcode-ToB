@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-07 15:46:08
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-08 17:54:28
+ * @LastEditTime: 2022-11-09 10:29:42
  * @Description: 物料面板
 -->
 <template>
@@ -33,6 +33,7 @@ const props = defineProps<Props>();
 // const $myemit = defineEmits(['update:modules']);
 
 // let list: any[] = $ref(props.modules);
+//conmputed实时获取入参
 let list: any[] = $computed(() => {
   // console.log('computed');
   return props.modules;

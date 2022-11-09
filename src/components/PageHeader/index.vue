@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-01 16:30:34
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-08 18:51:50
+ * @LastEditTime: 2022-11-09 10:31:17
  * @Description: 头部文件
 -->
 <template>
@@ -20,20 +20,19 @@
 <script setup lang="ts">
 import { useRouter, useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
 import { useCommand, state } from '@/vuex/useCommandModule';
-import { onMounted, getCurrentInstance } from 'vue';
+import { onMounted } from 'vue';
 import { useControlModules } from '@/vuex/useControlModule';
 let isEdit = $ref(true);
-let datas: any[] = $computed(() => {
-  return useControlModules.getters.getModules;
-});
-const { ctx: _this }: any = getCurrentInstance();
+
 onMounted(() => {
+  //初始化开启指令注册器
   useCommand();
 });
-
+//后退一步
 const backFn = () => {
   state.commands.undo();
 };
+//前进一步
 const goFn = () => {
   state.commands.redo();
 };

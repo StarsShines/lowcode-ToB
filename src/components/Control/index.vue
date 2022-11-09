@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-04 11:23:52
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-08 18:35:14
+ * @LastEditTime: 2022-11-09 10:30:32
  * @Description: 控制器
 -->
 <template>
@@ -12,7 +12,16 @@
       <div class="control-models">
         <el-collapse v-model="activeNames" @change="handleChange">
           <el-collapse-item title="基础组件" name="basic">
-            <draggable :list="$material.basic.$initializing" :group="{ name: 'group', pull: 'clone', put: false }" item-key="id" :sort="false" :clone="handleClone" :animation="300" @start="onStart" @end="onEnd">
+            <draggable
+              :list="$material.basic.$initializing"
+              :group="{ name: 'group', pull: 'clone', put: false }"
+              item-key="id"
+              :sort="false"
+              :clone="handleClone"
+              :animation="300"
+              @start="onStart"
+              @end="onEnd"
+            >
               <template #item="{ element }">
                 <div class="control-models-item">
                   <!-- <el-icon><Plus /></el-icon> -->
@@ -23,7 +32,16 @@
             </draggable>
           </el-collapse-item>
           <el-collapse-item title="搜索组件" name="search">
-            <draggable :list="$material.search.$initializing" :group="{ name: 'group', pull: 'clone', put: false }" item-key="id" :sort="false" :clone="handleClone" :animation="300" @start="onStart" @end="onEnd">
+            <draggable
+              :list="$material.search.$initializing"
+              :group="{ name: 'group', pull: 'clone', put: false }"
+              item-key="id"
+              :sort="false"
+              :clone="handleClone"
+              :animation="300"
+              @start="onStart"
+              @end="onEnd"
+            >
               <template #item="{ element }">
                 <div class="control-models-item">
                   <el-icon :size="13"><component :is="element.icon"></component></el-icon>
@@ -82,11 +100,11 @@ let modules: any[] = $computed(() => {
   // console.log('updata1', useControlModules.getters.getModules);
   return useControlModules.getters.getModules;
 });
-
+//实时获取指针队列历史数据
 let oldModules: any[] = $computed(() => {
   return useControlModules.getters.getOldModules;
 });
-
+//配置器
 const curSchema = $computed(() => {
   return $fields[curComponent.component];
 });
@@ -103,10 +121,12 @@ const handleClone = (original: any) => {
     id: getRandomCode(8),
   };
 };
+//拖拽开始记录历史数据
 const onStart = () => {
   console.log('start', modules);
   useControlModules.mutations.CHANGE_OLDMODULES(deepClone(modules));
 };
+//拖拽结束更新物料模块数据，同时更新指针队列
 const onEnd = () => {
   console.log('end', modules);
   useControlModules.mutations.CHANGE_MODULES(modules);
