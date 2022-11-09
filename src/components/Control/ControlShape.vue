@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-08 09:56:24
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-09 10:30:25
+ * @LastEditTime: 2022-11-09 11:08:55
  * @Description: 面板控制器
 -->
 <template>
@@ -35,7 +35,12 @@ interface Props {
 }
 const { modules = {}, list = [] } = defineProps<Props>();
 
-let $modules = $ref(list);
+let $modules: any[] = $computed(() => {
+  // console.log('computed');
+  return list;
+});
+
+// let $modules = $ref(list);
 let shape: any = $ref(null);
 let isShow: boolean = $ref(false);
 
@@ -61,6 +66,7 @@ const setcurComponent = (modules: any) => {
 };
 //删除物料模块
 const delComponent = (list: any, id: string) => {
+  console.log('lists', list);
   useControlModules.mutations.CHANGE_OLDMODULES(deepClone(list));
   // 遍历查找目标下标
   let index = list.reduce((pre: any, cur: any, i: any) => {

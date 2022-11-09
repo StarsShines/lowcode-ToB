@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-08 15:54:06
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-08 18:06:36
+ * @LastEditTime: 2022-11-09 10:49:37
  * @Description: 指令集
  */
 import { deepClone } from '@/utils/utils';
@@ -53,6 +53,8 @@ export const useCommand = () => {
     execute() {
       return {
         redo() {
+          console.log('undo', state.current);
+          console.log('undo', state.queue);
           if (state.current == -1) return; // 没有可以撤销的了
           let item: any = state.queue[state.current]; // 找到上一步还原
           if (item) {
@@ -102,6 +104,7 @@ const registry = (state: any, command: any) => {
       // 不需要放到队列中直接跳过即可
       return;
     }
+
     let { queue, current } = state;
 
     // 如果先放了 组件1 -》 组件2 => 组件3 =》 组件4 - -》 组件3
@@ -112,6 +115,7 @@ const registry = (state: any, command: any) => {
     }
     queue.push({ redo, undo }); // 保存指令的前进后退
     state.current = current + 1;
+    console.log('queues', state.queue);
     console.log('queue', state.current);
   };
 };
