@@ -2,11 +2,11 @@
  * @Author: M.H
  * @Date: 2022-11-07 15:46:08
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-09 16:20:35
+ * @LastEditTime: 2022-11-10 10:27:48
  * @Description: 物料面板
 -->
 <template>
-  <draggable :list="list" group="group" item-key="id" :sort="false" ghost-class="ghost" chosen-class="chosen" :animation="300" :class="[isWidget ? 'nest-child' : 'nest-area']">
+  <draggable :list="list" group="group" item-key="id" :sort="false" ghost-class="ghost" chosen-class="chosen" :animation="300" handle=".mover" :class="[isWidget ? 'nest-child' : 'nest-area']">
     <template #item="{ element }">
       <ControlShape :modules="element">
         <component :is="GLOBAL_COMPONENTS[element.component]" v-bind="element">
@@ -20,8 +20,8 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable';
 import ControlShape from './ControlShape.vue';
-import { watch, inject } from 'vue';
-import { useControlModules } from '@/vuex/useControlModule';
+import { inject } from 'vue';
+
 const GLOBAL_COMPONENTS: any = inject('GLOBAL_COMPONENTS');
 
 interface Props {
@@ -38,15 +38,6 @@ let list: any[] = $computed(() => {
   // console.log('computed');
   return props.modules;
 });
-
-// watch(
-//   () => list,
-//   (newVal) => {
-//     console.log('watch', newVal);
-//     // useControlModules.mutations.CHANGE_MODULES(newVal);
-//   },
-//   { deep: true },
-// );
 </script>
 
 <style lang="scss" scoped>

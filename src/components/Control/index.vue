@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-04 11:23:52
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-09 17:25:24
+ * @LastEditTime: 2022-11-10 11:28:41
  * @Description: 控制器
 -->
 <template>
@@ -50,15 +50,19 @@
               </template>
             </draggable>
           </el-collapse-item>
-          <el-collapse-item title="视图大纲" name="views">
+          <el-collapse-item name="views">
+            <template #title>
+              <el-icon class="menu-icon"> <Memo /> </el-icon>视图大纲
+            </template>
             <el-tree
+              :key="treeKey"
               :allow-drop="allowDrop"
               :data="treeData"
               :props="{ label: 'name', children: 'childrens' }"
               draggable
               default-expand-all
               node-key="id"
-              @node-drag-end="handleDragEnd"
+              @node-drag-start="handleDragStart"
               @node-drop="handleDrop"
             />
           </el-collapse-item>
@@ -100,6 +104,7 @@ import ControlTemplate from './ControlTemplate.vue';
 import { useControlModules } from '@/vuex/useControlModule';
 import { state } from '@/vuex/useCommandModule';
 
+let treeKey = $ref<number>(0);
 const $material: any = inject('$material');
 const $fields: any = inject('$fields');
 
@@ -118,6 +123,8 @@ let modules: any[] = $computed(() => {
 let oldModules: any[] = $computed(() => {
   return useControlModules.getters.getOldModules;
 });
+
+let dragModules = $ref<any[]>([]);
 //配置器
 const curSchema = $computed(() => {
   return $fields[curComponent.component];
@@ -151,25 +158,34 @@ const onEnd = () => {
   useControlModules.mutations.CHANGE_MODULES(modules);
   // console.log('updata3', useControlModules.getters.getModules);
   state.commands.updateData(oldModules, modules);
+  treeKey++;
 };
 
 //树形事件
 //判断是否能成为拖动位置
 const allowDrop = (draggingNode: Node, dropNode: Node, type: any) => {
-  if (dropNode.data.label === 'Level two 3-1') {
+  if (!dropNode.data.childrens) {
     return type !== 'inner';
   } else {
     return true;
   }
 };
 
-//拖拽结束
-const handleDragEnd = (draggingNode: Node, dropNode: Node, dropType: any, ev: DragEvents) => {
-  console.log('tree drag end:', dropNode && dropNode.label, dropType);
+// //拖拽开始触发
+const handleDragStart = (node: Node) => {
+  console.log('drag start', node);
+  dragModules = deepClone(modules);
 };
+
 //拖拽完成
 const handleDrop = (draggingNode: Node, dropNode: Node, dropType: any, ev: DragEvents) => {
-  console.log('tree drop:', dropNode.label, dropType);
+  if (dropType != 'none') {
+    console.log('tree drop:', dropNode.label, dropType);
+    console.log('tree drop: list: ', modules);
+    useControlModules.mutations.CHANGE_MODULES(modules);
+    useControlModules.mutations.CHANGE_OLDMODULES(dragModules);
+    state.commands.updateData(dragModules, modules);
+  }
 };
 </script>
 
@@ -209,6 +225,10 @@ const handleDrop = (draggingNode: Node, dropNode: Node, dropType: any, ev: DragE
       .title-text {
         margin-left: 5px;
       }
+    }
+    .menu-icon {
+      margin-right: 5px;
+      margin-top: -2px;
     }
   }
 
