@@ -131,7 +131,7 @@
     "styles": {
       "label": "导航栏样式",
       "type": "object",
-      "child": {
+      "childrens": {
         "pagePadding": {
           "label": "页面边距",
           "type": "number",

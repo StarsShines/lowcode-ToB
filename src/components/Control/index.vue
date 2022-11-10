@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-04 11:23:52
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-10 11:34:18
+ * @LastEditTime: 2022-11-10 11:42:47
  * @Description: 控制器
 -->
 <template>
@@ -81,14 +81,14 @@
 
     <!-- 物料配置 -->
     <div class="control-config">
-      <!-- <template v-if="curComponent"> -->
-      <!-- <custom-schema-template :schema="curSchema" v-model="curComponent"></custom-schema-template> -->
+      <template v-if="curComponent">
+        <!-- <custom-schema-template :schema="curSchema" v-model="curComponent"></custom-schema-template> -->
 
-      <div>
-        <h4 class="f-theme mt10 mb10">当前物料数据</h4>
-        {{ curComponent }}
-      </div>
-      <!-- </template> -->
+        <div>
+          <h4 class="f-theme mt10 mb10">当前物料数据</h4>
+          {{ curComponent }}
+        </div>
+      </template>
     </div>
   </div>
 </template>
