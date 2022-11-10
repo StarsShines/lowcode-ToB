@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-04 11:23:52
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-10 11:28:41
+ * @LastEditTime: 2022-11-10 11:34:18
  * @Description: 控制器
 -->
 <template>
@@ -57,7 +57,7 @@
             <el-tree
               :key="treeKey"
               :allow-drop="allowDrop"
-              :data="treeData"
+              :data="modules"
               :props="{ label: 'name', children: 'childrens' }"
               draggable
               default-expand-all
@@ -107,13 +107,13 @@ import { state } from '@/vuex/useCommandModule';
 let treeKey = $ref<number>(0);
 const $material: any = inject('$material');
 const $fields: any = inject('$fields');
-
+//活跃面板
+const activeNames = $ref(['basic', 'views']);
+//当前选中物料json
 const curComponent: any = $computed(() => {
   console.log('curComponent');
   return useControlModules.getters.getCurComponent;
 });
-
-const activeNames = $ref(['basic', 'views']);
 
 //可嵌套物料
 let modules: any[] = $computed(() => {
@@ -123,7 +123,7 @@ let modules: any[] = $computed(() => {
 let oldModules: any[] = $computed(() => {
   return useControlModules.getters.getOldModules;
 });
-
+//drag数据记录
 let dragModules = $ref<any[]>([]);
 //配置器
 const curSchema = $computed(() => {
@@ -143,10 +143,6 @@ const handleClone = (original: any) => {
   };
 };
 
-let treeData = computed(() => {
-  return useControlModules.getters.getModules;
-});
-
 //拖拽开始记录历史数据
 const onStart = () => {
   console.log('start', modules);
@@ -161,7 +157,11 @@ const onEnd = () => {
   treeKey++;
 };
 
-//树形事件
+/**
+ * @description: 树形事件
+ * @return {*}
+ * @author: M.H
+ */
 //判断是否能成为拖动位置
 const allowDrop = (draggingNode: Node, dropNode: Node, type: any) => {
   if (!dropNode.data.childrens) {
@@ -171,17 +171,16 @@ const allowDrop = (draggingNode: Node, dropNode: Node, type: any) => {
   }
 };
 
-// //拖拽开始触发
+// //拖拽开始触发（开始时记录位置信息）
 const handleDragStart = (node: Node) => {
-  console.log('drag start', node);
   dragModules = deepClone(modules);
 };
 
 //拖拽完成
 const handleDrop = (draggingNode: Node, dropNode: Node, dropType: any, ev: DragEvents) => {
   if (dropType != 'none') {
-    console.log('tree drop:', dropNode.label, dropType);
-    console.log('tree drop: list: ', modules);
+    // console.log('tree drop:', dropNode.label, dropType);
+    // console.log('tree drop: list: ', modules);
     useControlModules.mutations.CHANGE_MODULES(modules);
     useControlModules.mutations.CHANGE_OLDMODULES(dragModules);
     state.commands.updateData(dragModules, modules);
