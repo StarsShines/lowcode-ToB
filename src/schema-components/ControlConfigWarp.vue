@@ -2,13 +2,13 @@
  * @Author: M.H
  * @Date: 2022-11-11 16:06:06
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-11 16:07:17
+ * @LastEditTime: 2022-11-11 17:50:26
  * @Description: 请填写简介
 -->
 <template>
   <div class="wrap">
-    <div v-show="title" class="wrap-title">
-      <span>{{ title }}</span>
+    <div v-show="label" class="wrap-label">
+      <span>{{ label }}</span>
     </div>
 
     <div class="wrap-body">
@@ -20,15 +20,15 @@
 </template>
 <script lang="ts" setup>
 interface Props {
-  title?: string;
+  label?: string;
   line?: boolean;
 }
-const { title = '', line = false } = defineProps<Props>();
+const { label = '', line = false } = defineProps<Props>();
 </script>
 
 <style lang="scss" scoped>
 .wrap {
-  .wrap-title {
+  .wrap-label {
     padding: 10px 12px; /*no*/
     background: #e8f0fb40;
     font-size: 14px; /*no*/

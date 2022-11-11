@@ -7,6 +7,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ConfigColorPicker: typeof import('./schema-components/SchemaColor/ConfigColorPicker.vue')['default']
+    ControlConfigWarp: typeof import('./schema-components/ControlConfigWarp.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCollapse: typeof import('element-plus/es')['ElCollapse']
     ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
@@ -14,10 +16,22 @@ declare module '@vue/runtime-core' {
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSlider: typeof import('element-plus/es')['ElSlider']
     ElTree: typeof import('element-plus/es')['ElTree']
+    JumpDialog: typeof import('./schema-components/SchemaJump/JumpDialog.vue')['default']
     McContainer: typeof import('./material-components/McContainer/index.vue')['default']
     McTab: typeof import('./material-components/McTab/index.vue')['default']
     McTitle: typeof import('./material-components/McTitle/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SchemaArray: typeof import('./schema-components/SchemaArray/index.vue')['default']
+    SchemaColor: typeof import('./schema-components/SchemaColor/index.vue')['default']
+    SchemaJump: typeof import('./schema-components/SchemaJump/index.vue')['default']
+    SchemaNumber: typeof import('./schema-components/SchemaNumber/index.vue')['default']
+    SchemaObject: typeof import('./schema-components/SchemaObject/index.vue')['default']
+    SchemaSelect: typeof import('./schema-components/SchemaSelect/index.vue')['default']
+    SchemaString: typeof import('./schema-components/SchemaString/index.vue')['default']
+    SchemaSwitch: typeof import('./schema-components/SchemaSwitch/index.vue')['default']
+    SchemaTime: typeof import('./schema-components/SchemaTime/index.vue')['default']
+    SchemaUpload: typeof import('./schema-components/SchemaUpload/index.vue')['default']
+    SelectItem: typeof import('./schema-components/SchemaSelect/SelectItem.vue')['default']
   }
 }

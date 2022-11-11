@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-10-31 15:39:05
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-07 17:13:04
+ * @LastEditTime: 2022-11-11 17:20:40
  * @Description: 请填写简介
 -->
 
@@ -12,13 +12,14 @@
 <script setup lang="ts">
 import { provide } from 'vue';
 import { registerComponentsSchema } from '@/utils/registerSchema';
-import { GLOBAL_COMPONENTS } from '@/utils/registerCompenents';
+import { GLOBAL_MATERIAL_COMPONENTS, GLOBAL_Schema_COMPONENTS } from '@/utils/registerCompenents';
 
 const { material, fields } = registerComponentsSchema();
 
 provide('$material', material);
 provide('$fields', fields);
-provide('GLOBAL_COMPONENTS', GLOBAL_COMPONENTS);
+provide('GLOBAL_MATERIAL_COMPONENTS', GLOBAL_MATERIAL_COMPONENTS);
+provide('GLOBAL_Schema_COMPONENTS', GLOBAL_Schema_COMPONENTS);
 </script>
 <style lang="scss">
 html,

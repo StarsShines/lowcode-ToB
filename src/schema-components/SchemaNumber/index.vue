@@ -3,7 +3,7 @@
  * @Autor: WangYuan
  * @Date: 2021-09-24 09:11:38
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-11 17:16:05
+ * @LastEditTime: 2022-11-11 17:41:56
 -->
 <template>
   <control-config-warp :label="props.label">
@@ -14,9 +14,17 @@
 import { computed } from 'vue';
 import ControlConfigWarp from '../ControlConfigWarp.vue';
 import useSchema from '@/hooks/useSchema';
+
+interface Props {
+  id?: any;
+  modelValue: any;
+  label: string;
+  options?: any;
+}
+const props = defineProps<Props>();
 const emit = defineEmits(['update:modelValue']);
 
-let { mOptions, props } = useSchema({ max: 100 });
+let { mOptions } = useSchema({ max: 100 }, props);
 const mValue = computed({
   get() {
     return props.modelValue;

@@ -2,14 +2,14 @@
  * @Author: M.H
  * @Date: 2022-11-07 15:46:08
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-10 10:27:48
+ * @LastEditTime: 2022-11-11 17:21:40
  * @Description: 物料面板
 -->
 <template>
   <draggable :list="list" group="group" item-key="id" :sort="false" ghost-class="ghost" chosen-class="chosen" :animation="300" handle=".mover" :class="[isWidget ? 'nest-child' : 'nest-area']">
     <template #item="{ element }">
       <ControlShape :modules="element">
-        <component :is="GLOBAL_COMPONENTS[element.component]" v-bind="element">
+        <component :is="GLOBAL_MATERIAL_COMPONENTS[element.component]" v-bind="element">
           <control-template :modules="element.childrens" :isWidget="true"></control-template>
         </component>
       </ControlShape>
@@ -22,7 +22,7 @@ import draggable from 'vuedraggable';
 import ControlShape from './ControlShape.vue';
 import { inject } from 'vue';
 
-const GLOBAL_COMPONENTS: any = inject('GLOBAL_COMPONENTS');
+const GLOBAL_MATERIAL_COMPONENTS: any = inject('GLOBAL_MATERIAL_COMPONENTS');
 
 interface Props {
   isWidget: Boolean;

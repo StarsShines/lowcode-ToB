@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-10-31 15:39:05
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-11 17:15:22
+ * @LastEditTime: 2022-11-11 17:18:48
  * @Description: 请填写简介
  */
 import { defineConfig } from 'vite';
@@ -25,7 +25,7 @@ export default defineConfig({
       dts: resolve(pathSrc, 'auto-imports.d.ts'),
     }),
     Components({
-      dirs: ['src/material-components'],
+      dirs: ['src/material-components', 'src/schema-components'],
       resolvers: [ElementPlusResolver()],
 
       dts: resolve(pathSrc, 'components.d.ts'),

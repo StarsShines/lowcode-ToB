@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-07 17:08:29
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-11 17:14:37
+ * @LastEditTime: 2022-11-11 17:24:43
  * @Description: 组件引入
  */
 import McContainer from '@material/McContainer/index.vue';
@@ -11,12 +11,23 @@ import McTitle from '@material/McTitle/index.vue';
 
 import SchemaNumber from '@schema/SchemaNumber/index.vue';
 
-export const GLOBAL_COMPONENTS: any = {
+export const GLOBAL_MATERIAL_COMPONENTS: any = {
   McContainer,
   McTab,
   McTitle,
 };
 
 export const GLOBAL_Schema_COMPONENTS: any = {
-  SchemaNumber,
+  number: SchemaNumber,
+  // string: SchemaString,
+  // select: SchemaSelect,
+  // switch: SchemaSwitch,
+  // color: SchemaColor,
+  // upload: SchemaUpload,
+  // jump: SchemaJump,
+  // time: SchemaTime,
+  // cube: SchemaCapCube,
+  // goods: SchemaGoods,
+  // object: SchemaObject,
+  // array: SchemaArray,
 };

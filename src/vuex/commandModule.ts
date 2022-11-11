@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-08 15:54:06
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-11 15:01:07
+ * @LastEditTime: 2022-11-11 17:56:33
  * @Description: 指令集
  */
 import { deepClone } from '@/utils/utils';
@@ -78,10 +78,12 @@ export const registerCommand = () => {
       return {
         redo: () => {
           console.log('redo');
+          ControlModules.mutations.CHANGE_CURCOMPONENT('');
           ControlModules.mutations.CHANGE_MODULES(state.after);
         },
         undo: () => {
           console.log('undo');
+          ControlModules.mutations.CHANGE_CURCOMPONENT('');
           ControlModules.mutations.CHANGE_MODULES(state.before);
         },
       };

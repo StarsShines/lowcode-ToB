@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-04 11:23:52
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-11 17:02:40
+ * @LastEditTime: 2022-11-11 17:51:32
  * @Description: 控制器
 -->
 <template>
@@ -80,17 +80,19 @@
     </div>
 
     <!-- 物料配置 -->
-    <div class="control-config">
-      <template v-if="curComponent">
-        <!-- <custom-schema-template :schema="curSchema" v-model="curComponent"></custom-schema-template> -->
-        <ControlConfig :schema="curSchema" v-model="curComponent" />
+    <el-scrollbar style="height: calc(100vh - 60px); box-shadow: 2px 0px 20px #ddd">
+      <div class="control-config">
+        <template v-if="curComponent">
+          <!-- <custom-schema-template :schema="curSchema" v-model="curComponent"></custom-schema-template> -->
+          <ControlConfig :schema="curSchema" v-model="curComponent" />
 
-        <div>
-          <h4 class="f-theme mt10 mb10">当前物料数据</h4>
-          {{ curComponent }}
-        </div>
-      </template>
-    </div>
+          <div>
+            <h4 class="f-theme mt10 mb10">当前物料数据</h4>
+            {{ curComponent }}
+          </div>
+        </template>
+      </div>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -256,8 +258,6 @@ const handleDrop = (draggingNode: Node, dropNode: Node, dropType: any, ev: DragE
 
   .control-config {
     width: 360px;
-    height: calc(100vh - 60px);
-    overflow: auto;
     animation-duration: 0.2s;
     padding: 10px;
     background: #fff;
