@@ -1,21 +1,14 @@
 <!--
- * @Description: What's this for
- * @Autor: WangYuan
- * @Date: 2021-10-08 16:34:00
- * @LastEditors: WangYuan
- * @LastEditTime: 2021-10-18 09:59:07
+ * @Author: M.H
+ * @Date: 2022-11-11 17:58:59
+ * @LastEditors: M.H
+ * @LastEditTime: 2022-11-11 18:12:59
+ * @Description: 请填写简介
 -->
+
 <template>
   <div></div>
   <!-- <custom-schema-template-set></custom-schema-template-set> -->
 </template>
 
-<script>
-// import customSchemaTemplateSet from "../custom-schema-template-set/index.vue";
-export default {
-  name: 'schema',
-  components: {
-    // customSchemaTemplateSet,
-  },
-};
-</script>
+<script lang="ts" setup></script>
