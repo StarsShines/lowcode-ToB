@@ -2,8 +2,8 @@
  * @Description: What's this for
  * @Autor: WangYuan
  * @Date: 2021-09-24 09:11:38
- * @LastEditors: WangYuan
- * @LastEditTime: 2022-01-01 09:17:49
+ * @LastEditors: M.H
+ * @LastEditTime: 2022-11-11 16:33:12
 -->
 <template>
   <config-wrap :title="label">
@@ -16,15 +16,8 @@
         <!-- 非编译模式，根据schema子类遍历数组单项组件 -->
         <template v-else>
           <div v-for="item in mValue" :key="item.id" class="nav-item">
-            <component
-              v-for="(val, key, index) in schema.child"
-              :key="index"
-              :is="getComponents(val.type)"
-              v-model="item[key]"
-              v-bind="val"
-            >
-            </component>
-            <div class="nav-delete" @click="delItem">x</div>
+            <component v-for="(val, key, index) in schema.child" :key="index" :is="typeToComponent[val.type]" v-model="item[key]" v-bind="val"> </component>
+            <div class="nav-delete" @click="delItem(item.id)">x</div>
           </div>
         </template>
       </draggable>
@@ -35,17 +28,18 @@
 </template>
 
 <script>
-import schemaMixin from "@/mixin/schemaMixin";
+import schemaMixin from '@/mixin/schemaMixin';
+import typeToComponent from '@/config/schema-template';
 
 export default {
-  name: "SchemaArray",
+  name: 'SchemaArray',
 
   mixins: [schemaMixin],
 
   props: {
     label: {
       type: String,
-      default: "",
+      default: '',
     },
     edit: {
       type: Boolean,
@@ -57,16 +51,21 @@ export default {
     },
   },
 
+  data() {
+    return {
+      typeToComponent,
+    };
+  },
+
   methods: {
-    getComponents(type) {
-      return `schema-${type}`;
-    },
     addItem() {
+      console.log('...');
+      console.log(this.mValue);
       if (this.mValue.length >= this.mOptions?.limit) {
         this.$notify({
-          title: "无法新增",
+          title: '无法新增',
           message: `最多只能添加${this.mOptions?.limit}条数据`,
-          type: "warning",
+          type: 'warning',
         });
         return;
       }
@@ -76,7 +75,8 @@ export default {
       });
     },
 
-    delItem(i) {
+    delItem(id) {
+      let i = this.mValue.findIndex((item) => item.id == id);
       this.mValue.splice(i, 1);
     },
   },

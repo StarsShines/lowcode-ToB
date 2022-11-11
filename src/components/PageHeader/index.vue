@@ -19,14 +19,14 @@
 
 <script setup lang="ts">
 import { useRouter, useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
-import { useCommand, state } from '@/vuex/useCommandModule';
+import { registerCommand, state } from '@/vuex/commandModule';
 import { onMounted } from 'vue';
-import { useControlModules } from '@/vuex/useControlModule';
+import { ControlModules } from '@/vuex/controlModule';
 let isEdit = $ref(true);
 
 onMounted(() => {
   //初始化开启指令注册器
-  useCommand();
+  registerCommand();
 });
 //后退一步
 const backFn = () => {

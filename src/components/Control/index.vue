@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-04 11:23:52
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-10 11:42:47
+ * @LastEditTime: 2022-11-11 17:02:40
  * @Description: 控制器
 -->
 <template>
@@ -83,6 +83,7 @@
     <div class="control-config">
       <template v-if="curComponent">
         <!-- <custom-schema-template :schema="curSchema" v-model="curComponent"></custom-schema-template> -->
+        <ControlConfig :schema="curSchema" v-model="curComponent" />
 
         <div>
           <h4 class="f-theme mt10 mb10">当前物料数据</h4>
@@ -101,8 +102,9 @@ import draggable from 'vuedraggable';
 import { inject, computed } from 'vue';
 import { deepClone, getRandomCode } from '@/utils/utils';
 import ControlTemplate from './ControlTemplate.vue';
-import { useControlModules } from '@/vuex/useControlModule';
-import { state } from '@/vuex/useCommandModule';
+import ControlConfig from './ControlConfig.vue';
+import { ControlModules } from '@/vuex/controlModule';
+import { state } from '@/vuex/commandModule';
 
 let treeKey = $ref<number>(0);
 const $material: any = inject('$material');
@@ -112,21 +114,23 @@ const activeNames = $ref(['basic', 'views']);
 //当前选中物料json
 const curComponent: any = $computed(() => {
   console.log('curComponent');
-  return useControlModules.getters.getCurComponent;
+  return ControlModules.getters.getCurComponent;
 });
 
 //可嵌套物料
 let modules: any[] = $computed(() => {
-  return useControlModules.getters.getModules;
+  return ControlModules.getters.getModules;
 });
 //实时获取指针队列历史数据
 let oldModules: any[] = $computed(() => {
-  return useControlModules.getters.getOldModules;
+  return ControlModules.getters.getOldModules;
 });
 //drag数据记录
 let dragModules = $ref<any[]>([]);
 //配置器
-const curSchema = $computed(() => {
+const curSchema: any[] = $computed(() => {
+  console.log('$fields', $fields);
+  console.log($fields[curComponent.component]);
   return $fields[curComponent.component];
 });
 
@@ -146,13 +150,13 @@ const handleClone = (original: any) => {
 //拖拽开始记录历史数据
 const onStart = () => {
   console.log('start', modules);
-  useControlModules.mutations.CHANGE_OLDMODULES(deepClone(modules));
+  ControlModules.mutations.CHANGE_OLDMODULES(deepClone(modules));
 };
 //拖拽结束更新物料模块数据，同时更新指针队列
 const onEnd = () => {
   console.log('end', modules);
-  useControlModules.mutations.CHANGE_MODULES(modules);
-  // console.log('updata3', useControlModules.getters.getModules);
+  ControlModules.mutations.CHANGE_MODULES(modules);
+  // console.log('updata3', ControlModules.getters.getModules);
   state.commands.updateData(oldModules, modules);
   treeKey++;
 };
@@ -181,8 +185,8 @@ const handleDrop = (draggingNode: Node, dropNode: Node, dropType: any, ev: DragE
   if (dropType != 'none') {
     // console.log('tree drop:', dropNode.label, dropType);
     // console.log('tree drop: list: ', modules);
-    useControlModules.mutations.CHANGE_MODULES(modules);
-    useControlModules.mutations.CHANGE_OLDMODULES(dragModules);
+    ControlModules.mutations.CHANGE_MODULES(modules);
+    ControlModules.mutations.CHANGE_OLDMODULES(dragModules);
     state.commands.updateData(dragModules, modules);
   }
 };

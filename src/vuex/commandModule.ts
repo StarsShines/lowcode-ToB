@@ -2,12 +2,12 @@
  * @Author: M.H
  * @Date: 2022-11-08 15:54:06
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-09 10:49:37
+ * @LastEditTime: 2022-11-11 15:01:07
  * @Description: 指令集
  */
 import { deepClone } from '@/utils/utils';
 import { onUnmounted, reactive } from 'vue';
-import { useControlModules } from './useControlModule';
+import { ControlModules } from './controlModule';
 
 // let datas: any[] = $computed(() => {
 //   return ControlModules.getters.getModules;
@@ -29,7 +29,7 @@ export let state = reactive<StateProp>({
   destroyArray: [],
 });
 
-export const useCommand = () => {
+export const registerCommand = () => {
   //前进指针
   registry(state, {
     name: 'redo',
@@ -78,11 +78,11 @@ export const useCommand = () => {
       return {
         redo: () => {
           console.log('redo');
-          useControlModules.mutations.CHANGE_MODULES(state.after);
+          ControlModules.mutations.CHANGE_MODULES(state.after);
         },
         undo: () => {
           console.log('undo');
-          useControlModules.mutations.CHANGE_MODULES(state.before);
+          ControlModules.mutations.CHANGE_MODULES(state.before);
         },
       };
     },
@@ -91,7 +91,7 @@ export const useCommand = () => {
     // 清理绑定的事件
     state.destroyArray.forEach((fn: any) => fn && fn());
   });
-  return state;
+  // return state;
 };
 //注册器
 const registry = (state: any, command: any) => {

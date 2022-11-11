@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-08 09:56:24
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-09 17:00:25
+ * @LastEditTime: 2022-11-11 15:01:24
  * @Description: 面板控制器
 -->
 <template>
@@ -25,10 +25,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useControlModules } from '@/vuex/useControlModule';
+import { ControlModules } from '@/vuex/controlModule';
 import { onMounted } from 'vue';
 import { deepClone } from '@/utils/utils';
-import { state } from '@/vuex/useCommandModule';
+import { state } from '@/vuex/commandModule';
 
 interface Props {
   modules?: any;
@@ -36,8 +36,8 @@ interface Props {
 const { modules = {} } = defineProps<Props>();
 
 let $modules: any[] = $computed(() => {
-  // console.log('updata1', useControlModules.getters.getModules);
-  return useControlModules.getters.getModules;
+  // console.log('updata1', ControlModules.getters.getModules);
+  return ControlModules.getters.getModules;
 });
 
 // let $modules = $ref(list);
@@ -49,7 +49,7 @@ onMounted(() => {
 });
 //获取当前选中物料数据
 const curComponent: any = $computed(() => {
-  return useControlModules.getters.getCurComponent;
+  return ControlModules.getters.getCurComponent;
 });
 //物料id是否匹配
 const isCurComponent = (id: any) => {
@@ -57,24 +57,24 @@ const isCurComponent = (id: any) => {
 };
 //实时获取指针队列历史数据
 let oldModules: any[] = $computed(() => {
-  return useControlModules.getters.getOldModules;
+  return ControlModules.getters.getOldModules;
 });
 
 // 选中物料
 const setcurComponent = (modules: any) => {
   console.log('lists', $modules);
-  useControlModules.mutations.CHANGE_CURCOMPONENT(modules);
+  ControlModules.mutations.CHANGE_CURCOMPONENT(modules);
 };
 //上报历史数据
 const commitOldData = (list: any, id: string) => {
-  useControlModules.mutations.CHANGE_OLDMODULES(list);
+  ControlModules.mutations.CHANGE_OLDMODULES(list);
   let _list = deepClone(list);
 
   //递归删除物料
   let newList = delComponent(_list, id);
   //上报并更新数据
-  useControlModules.mutations.CHANGE_MODULES(newList);
-  useControlModules.mutations.CHANGE_CURCOMPONENT('');
+  ControlModules.mutations.CHANGE_MODULES(newList);
+  ControlModules.mutations.CHANGE_CURCOMPONENT('');
   state.commands.updateData(oldModules, newList);
 };
 //删除物料模块

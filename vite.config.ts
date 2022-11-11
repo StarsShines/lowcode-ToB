@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-10-31 15:39:05
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-07 16:45:09
+ * @LastEditTime: 2022-11-11 17:15:22
  * @Description: 请填写简介
  */
 import { defineConfig } from 'vite';
@@ -38,6 +38,8 @@ export default defineConfig({
       '@api': resolve(__dirname, 'src/service/api'),
       '@material': resolve(__dirname, 'src/material-components'),
       '@materialTemplate': resolve(__dirname, 'src/material-template'),
+      '@hooks': resolve(__dirname, 'src/hooks'),
+      '@schema': resolve(__dirname, 'src/schema-components'),
     },
   },
   css: {

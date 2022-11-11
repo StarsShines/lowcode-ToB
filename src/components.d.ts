@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
+    ElSlider: typeof import('element-plus/es')['ElSlider']
     ElTree: typeof import('element-plus/es')['ElTree']
     McContainer: typeof import('./material-components/McContainer/index.vue')['default']
     McTab: typeof import('./material-components/McTab/index.vue')['default']

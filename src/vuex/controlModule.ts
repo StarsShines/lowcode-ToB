@@ -2,7 +2,7 @@
  * @Author: M.H
  * @Date: 2022-11-08 10:47:07
  * @LastEditors: M.H
- * @LastEditTime: 2022-11-08 11:39:47
+ * @LastEditTime: 2022-11-11 15:00:11
  * @Description: 请填写简介
  */
 import { reactive, readonly, computed } from 'vue';
@@ -45,7 +45,7 @@ let mutations: any = {
   },
 };
 
-export const useControlModules = {
+export const ControlModules = {
   state: readonly(state),
   getters: readonly(getters),
   mutations,
