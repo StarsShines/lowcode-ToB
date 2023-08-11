@@ -1,8 +1,8 @@
 /*
  * @Author: M.H
  * @Date: 2022-11-08 15:54:06
- * @LastEditors: M.H
- * @LastEditTime: 2022-11-11 17:56:33
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-11 00:29:37
  * @Description: 指令集
  */
 import { deepClone } from '@/utils/utils';
@@ -69,8 +69,8 @@ export const registerCommand = () => {
     name: 'updateData', // 更新整个容器
     pushQueue: true,
     execute(oldValue: any, newValue: any) {
-      console.log('1111', oldValue);
-      console.log('2222', newValue);
+      // console.log('oldValue', oldValue);
+      // console.log('newValue', newValue);
       let state = {
         before: deepClone(oldValue), // 当前的值
         after: deepClone(newValue), // 新值
@@ -118,6 +118,6 @@ const registry = (state: any, command: any) => {
     queue.push({ redo, undo }); // 保存指令的前进后退
     state.current = current + 1;
     console.log('queues', state.queue);
-    console.log('queue', state.current);
+    // console.log('queue.current', state.current);
   };
 };

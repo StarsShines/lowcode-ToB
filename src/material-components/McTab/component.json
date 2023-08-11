@@ -1,190 +1,154 @@
 {
-  "name": "图文导航",
-  "icon": "icon-daohang",
-  "group": ["search"],
-  "fields": {
-    "tabList": {
-      "label": "导航栏列表",
-      "type": "array",
-      "child": {
-        "label": {
-          "label": "导航名称",
-          "type": "string",
-          "value": "默认导航"
-        },
-        "image": {
-          "label": "图片上传",
-          "type": "upload",
-          "value": "http://110.42.184.128:8090/img/1638500189438.png"
-        },
-        "jump": {
-          "label": "页面跳转",
-          "type": "jump",
-          "value": ""
-        }
+  "name": "选项卡",
+  "icon": "CreditCard",
+  "group": ["basic", "search"],
+  "model": "multiple",
+  "curSlot": "0group",
+  "childrens": [
+    {
+      "component": "McContainer",
+      "name": "容器",
+      "icon": "DocumentAdd",
+      "model": "single",
+      "childrens": [],
+      "styles": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "paddingRight": 0
       },
-      "value": [
-        {
-          "id": "0001",
-          "label": "推荐酒店",
-          "image": "http://110.42.184.128:8090/img/1638500137694.png"
-        },
-        {
-          "id": "0002",
-          "label": "热销抢购",
-          "image": "http://110.42.184.128:8090/img/1638500155713.png"
-        },
-        {
-          "id": "0003",
-          "label": "促销门票",
-          "image": "http://110.42.184.128:8090/img/1638500173774.png"
-        },
-        {
-          "id": "0004",
-          "label": "机票团购",
-          "image": "http://110.42.184.128:8090/img/1639569399375.png"
-        }
-      ]
+
+      "id": "tabsInit0"
+    }
+  ],
+  "fields": {
+    "curName": {
+      "label": "选项卡配置"
     },
-    "attrs": {
-      "label": "导航栏设置",
+    "styles": {
+      "label": "样式",
       "type": "object",
       "child": {
-        "model": {
-          "label": "模式选择",
+        "paddingTop": {
+          "label": "上内间距",
+          "type": "number",
+          "value": 0
+        },
+        "paddingBottom": {
+          "label": "下内间距",
+          "type": "number",
+          "value": 0
+        },
+        "paddingLeft": {
+          "label": "左内间距",
+          "type": "number",
+          "value": 0
+        },
+        "paddingRight": {
+          "label": "右内间距",
+          "type": "number",
+          "value": 0
+        },
+        "marginTop": {
+          "label": "上外间距",
+          "type": "number",
+          "value": 0
+        },
+        "marginBottom": {
+          "label": "下外间距",
+          "type": "number",
+          "value": 0
+        },
+        "marginLeft": {
+          "label": "左外间距",
+          "type": "number",
+          "value": 0
+        },
+        "marginRight": {
+          "label": "右外间距",
+          "type": "number",
+          "value": 0
+        }
+      }
+    },
+    "options": {
+      "label": "配置",
+      "type": "object",
+      "child": {
+        "tabPosition": {
+          "label": "选项卡所在位置",
           "type": "select",
-          "value": "fixed",
-          "data": [
+          "value": "top",
+          "options": [
             {
-              "id": "1634892925fV0D",
-              "label": "固定",
-              "value": "fixed"
+              "id": "1",
+              "label": "居上",
+              "value": "top"
             },
             {
-              "id": "16348929304MaO",
-              "label": "滑动",
-              "value": "scroll"
+              "id": "2",
+              "label": "居左",
+              "value": "left"
+            },
+            {
+              "id": "3",
+              "label": "居右",
+              "value": "right"
+            },
+            {
+              "id": "4",
+              "label": "居下",
+              "value": "bottom"
             }
           ]
         },
-        "type": {
-          "label": "显示类型",
+        "closable": {
+          "label": "标签卡是否可关闭",
+          "type": "switch",
+          "value": false
+        },
+        "card": {
+          "label": "风格",
           "type": "select",
-          "value": "image-text",
-          "data": [
+          "value": "",
+          "options": [
             {
-              "id": "1634892957h4U9",
-              "label": "图片",
-              "value": "image"
+              "id": "1",
+              "label": "默认",
+              "value": ""
             },
             {
-              "id": "1634892958XCIV",
-              "label": "文字",
-              "value": "text"
+              "id": "2",
+              "label": "卡片",
+              "value": "card"
             },
             {
-              "id": "1634892959O8OC",
-              "label": "图文",
-              "value": "image-text"
+              "id": "3",
+              "label": "边框卡片",
+              "value": "border-card"
             }
           ]
         },
-        "max": {
-          "label": "最多显示",
-          "type": "select",
-          "value": "4",
-          "data": [
+        "list": {
+          "label": "tabs数量",
+          "type": "array",
+          "value": [
             {
-              "id": "1634893007npTR",
-              "label": "2.5个",
-              "value": "2.5"
-            },
-            {
-              "id": "16348930081xgk",
-              "label": "3个",
-              "value": "3"
-            },
-            {
-              "id": "16348930260wyB",
-              "label": "3.5个",
-              "value": "3.5"
-            },
-            {
-              "id": "1634893027qWrg",
-              "label": "4个",
-              "value": "4"
-            },
-            {
-              "id": "16348930456yGG",
-              "label": "4.5个",
-              "value": "4.5"
-            },
-            {
-              "id": "1634893046CdPQ",
-              "label": "5个",
-              "value": "5"
+              "label": "卡片",
+              "value": 0,
+              "type": "string"
             }
           ]
         }
       }
     },
-    "styles": {
-      "label": "导航栏样式",
+    "event": {
+      "label": "事件",
       "type": "object",
-      "childrens": {
-        "pagePadding": {
-          "label": "页面边距",
-          "type": "number",
-          "value": 0
-        },
-        "cmpUpperPadding": {
-          "label": "上边距",
-          "type": "number",
-          "value": 0
-        },
-        "cmpLowerPadding": {
-          "label": "下边距",
-          "type": "number",
-          "value": 0
-        },
-        "cmpUpperRadius": {
-          "label": "上圆角",
-          "type": "number",
-          "value": 0
-        },
-        "cmpLowerRadius": {
-          "label": "下圆角",
-          "type": "number",
-          "value": 0
-        },
-        "imgWidth": {
-          "label": "图片宽度",
-          "type": "number",
-          "value": 50
-        },
-        "imgPadding": {
-          "label": "图片间隔",
-          "type": "number",
-          "value": 10
-        },
-        "imgRadius": {
-          "label": "图片圆角",
-          "type": "number",
-          "value": 0
-        },
-        "fontSize": {
-          "label": "文本字体",
-          "type": "number",
-          "value": 12
-        },
-        "titleColor": {
-          "label": "文本颜色",
-          "type": "color",
-          "value": ""
-        },
-        "cmpBackground": {
-          "label": "组件背景",
-          "type": "color",
+      "child": {
+        "onClick": {
+          "label": "onclick事件",
+          "type": "string",
           "value": ""
         }
       }

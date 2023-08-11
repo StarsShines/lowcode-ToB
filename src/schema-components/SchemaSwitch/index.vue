@@ -1,55 +1,42 @@
 <!--
- * @Description: What's this for
- * @Autor: WangYuan
- * @Date: 2021-06-01 08:57:21
- * @LastEditors: WangYuan
- * @LastEditTime: 2021-09-26 15:18:52
+ * @Author: M.H
+ * @Date: 2022-06-27 12:27:52
+ * @LastEditTime: 2023-06-29 19:35:12
+ * @Description: 选择器
 -->
 <template>
-  <config-item :label='label'>
-    <div class="wrap">
-      <div class="wrap-label">{{mValue?mOptions.trueLabel:mOptions.falseLabel}}</div>
-      <el-checkbox v-model="mValue"></el-checkbox>
-    </div>
-  </config-item>
+  <control-config-warp :label="props.label">
+    <el-switch v-model="mValue" active-text="是" inactive-text="否" />
+    <!-- <el-select v-model="mValue" class="w_100" placeholder="请选择">
+      <el-option v-for="(item, index) in props.options" :key="index" :label="item.label" :value="item.value" />
+    </el-select> -->
+  </control-config-warp>
 </template>
 
-<script>
-import schemaMixin from "@/mixin/schemaMixin";
+<script setup lang="ts">
+import { computed } from 'vue';
+import ControlConfigWarp from '../ControlConfigWarp.vue';
+// import useSchema from '@/hooks/useSchema';
 
-export default {
-  name: "SchemaSwitch",
+interface Props {
+  id?: any;
+  modelValue: any;
+  label: string;
+  options?: any;
+}
+const props = defineProps<Props>();
+// console.log(props);
+const emit = defineEmits(['update:modelValue']);
 
-  mixins: [schemaMixin],
-
-  props: {
-    value: {
-      type: Boolean,
-      default: false,
-    },
+// let { mOptions } = useSchema({}, props);
+const mValue = computed({
+  get() {
+    return props.modelValue;
   },
-
-  data() {
-    return {
-      defaultOptions: {
-        trueLabel: "显示",
-        falseLabel: "隐藏",
-      },
-    };
+  set(value) {
+    emit('update:modelValue', value);
   },
-};
+});
 </script>
 
-<style lang="scss" scoped>
-.wrap {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-right: 25px; /*no*/
-
-  .wrap-label {
-    font-size: 14px; /*no*/
-    line-height: 32px; /*no*/
-  }
-}
-</style>
+<style lang="scss" scoped></style>

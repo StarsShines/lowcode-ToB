@@ -1,8 +1,8 @@
 <!--
  * @Author: M.H
  * @Date: 2022-11-04 11:23:52
- * @LastEditors: M.H
- * @LastEditTime: 2022-11-11 17:51:32
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-22 17:19:03
  * @Description: 控制器
 -->
 <template>
@@ -31,7 +31,7 @@
               </template>
             </draggable>
           </el-collapse-item>
-          <el-collapse-item title="搜索组件" name="search">
+          <el-collapse-item title="业务组件" name="search">
             <draggable
               :list="$material.search.$initializing"
               :group="{ name: 'group', pull: 'clone', put: false }"
@@ -64,7 +64,8 @@
               node-key="id"
               @node-drag-start="handleDragStart"
               @node-drop="handleDrop"
-            />
+            >
+            </el-tree>
           </el-collapse-item>
         </el-collapse>
       </div>
@@ -108,6 +109,10 @@ import ControlConfig from './ControlConfig.vue';
 import { ControlModules } from '@/vuex/controlModule';
 import { state } from '@/vuex/commandModule';
 
+const getChildrens = (data: any) => {
+  return 'childrens';
+};
+
 let treeKey = $ref<number>(0);
 const $material: any = inject('$material');
 const $fields: any = inject('$fields');
@@ -115,7 +120,7 @@ const $fields: any = inject('$fields');
 const activeNames = $ref(['basic', 'views']);
 //当前选中物料json
 const curComponent: any = $computed(() => {
-  console.log('curComponent');
+  // console.log('curComponent');
   return ControlModules.getters.getCurComponent;
 });
 
@@ -131,18 +136,19 @@ let oldModules: any[] = $computed(() => {
 let dragModules = $ref<any[]>([]);
 //配置器
 const curSchema: any[] = $computed(() => {
-  console.log('$fields', $fields);
-  console.log($fields[curComponent.component]);
+  // console.log('$fields', $fields);
+  // console.log($fields[curComponent.component]);
   return $fields[curComponent.component];
 });
 
 //面板展开
-const handleChange = (val: string[]) => {
+const handleChange = (val: any) => {
   console.log(val);
 };
 
 // 复制物料
 const handleClone = (original: any) => {
+  // console.log(original, 'original');
   return {
     ...deepClone(original),
     id: getRandomCode(8),

@@ -1,25 +1,41 @@
 <!--
  * @Author: M.H
  * @Date: 2022-11-04 11:36:10
- * @LastEditors: M.H
- * @LastEditTime: 2022-11-04 18:20:12
- * @Description: 请填写简介
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-06-29 18:39:10
+ * @Description: 容器组件
 -->
 
 <template>
   <div class="cnt">
     <div class="cnt-head h5-underline"></div>
-    <div class="cnt-body" :style="{ padding: `${padding}px 0` }">
+    <div class="cnt-body" :style="getContainertyle()">
       <slot class="nest-none"></slot>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-interface Props {
-  padding?: Number;
+interface PaddingEntity {
+  paddingTop?: Number;
+  paddingBottom?: Number;
+  paddingLeft?: Number;
+  paddingRight?: Number;
 }
-const { padding = 0 } = defineProps<Props>();
+interface Props {
+  styles?: PaddingEntity;
+  options?: any;
+}
+
+const { styles = { paddingTop: 0, paddingBottom: 0, paddingLeft: 0, paddingRight: 0 } } = defineProps<Props>();
+const getContainertyle = () => {
+  return {
+    paddingTop: styles.paddingTop + 'px',
+    paddingBottom: styles.paddingBottom + 'px',
+    paddingLeft: styles.paddingLeft + 'px',
+    paddingRight: styles.paddingRight + 'px',
+  };
+};
 </script>
 
 <style lang="scss" scoped>

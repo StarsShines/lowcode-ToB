@@ -1,8 +1,8 @@
 /*
  * @Author: M.H
  * @Date: 2022-11-04 17:49:30
- * @LastEditors: M.H
- * @LastEditTime: 2022-11-08 17:07:18
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-06-29 18:45:41
  * @Description: 全局方法注册
  */
 
@@ -14,7 +14,7 @@ export const registerComponentsSchema = () => {
     search: {},
   };
   let fields: any = {};
-  // console.log(files);
+  console.log(files);
   Object.keys(files).forEach((key: any) => {
     let initializing: any = [];
     const [, , , name] = key.split('/');
@@ -29,27 +29,40 @@ export const registerComponentsSchema = () => {
       }
     });
   });
+  console.log(material);
   return { material, fields };
 };
 
 // 初始化组件初始数据
 const initDefaulValue = (config: any) => {
-  let { component, name, icon, fields, childrens } = config;
-  let temp = { component, name, icon, childrens };
+  let { component, name, icon, model, curSlot = null, fields, childrens } = config;
+  let temp = { component, name, icon, model, curSlot, childrens };
   setDefaultValue(fields, temp);
   return temp;
 };
 
 // 递归设置各层级初始数据
-function setDefaultValue(fields: any, initializing: any) {
+function setDefaultValue(fields: any, temp: any) {
+  // console.log(fields);
   for (let key in fields) {
+    // if (Array.isArray(fields[key])) {
+    //   let childFields = fields[key];
+    //   for (let childKey in childFields) {
+    //     let { type, value, child } = childFields[childKey];
+    //     console.log(childFields[childKey]);
+    //     if (type === 'object') {
+    //       temp['style'] = {};
+    //       child && setDefaultValue(childFields[childKey].child, temp['style']);
+    //     }
+    //   }
+    // } else {
     let { type, value, child } = fields[key];
-    if (type == 'object') {
-      initializing[key] = {};
-      child && setDefaultValue(fields[key].child, initializing[key]);
+    if (type === 'object') {
+      temp[key] = {};
+      child && setDefaultValue(fields[key].child, temp[key]);
     } else {
-      initializing[key] = value;
+      temp[key] = value;
     }
   }
-  return initializing;
+  // }
 }

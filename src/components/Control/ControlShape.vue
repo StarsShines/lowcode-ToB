@@ -15,7 +15,9 @@
     <!-- 组件工具栏 -->
     <div v-if="isShow" class="shape-tab">
       <template v-if="isCurComponent(modules.id)">
-        <el-icon class="iconfont icon-shanchu tab-icon f16" @click.stop="commitOldData(deepClone($modules), curComponent.id)"><DeleteFilled /></el-icon>
+        <el-icon class="iconfont icon-shanchu tab-icon f16" @click.stop="commitOldData(deepClone($modules), curComponent.id)"
+          ><DeleteFilled
+        /></el-icon>
       </template>
 
       <span v-else>{{ modules.name }}</span>

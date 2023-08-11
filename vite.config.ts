@@ -21,13 +21,13 @@ export default defineConfig({
       reactivityTransform: true,
     }),
     AutoImport({
+      imports: ['vue', 'vue-router'],
       resolvers: [ElementPlusResolver()],
       dts: resolve(pathSrc, 'auto-imports.d.ts'),
     }),
     Components({
       dirs: ['src/material-components', 'src/schema-components'],
       resolvers: [ElementPlusResolver()],
-
       dts: resolve(pathSrc, 'components.d.ts'),
     }),
   ],

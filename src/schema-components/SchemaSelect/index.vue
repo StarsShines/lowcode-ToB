@@ -1,116 +1,41 @@
 <!--
- * @Description: 模板选择容器组件
- * @Autor: WangYuan
- * @Date: 2021-05-31 11:54:32
- * @LastEditors: WangYuan
- * @LastEditTime: 2021-10-18 20:03:21
+ * @Author: M.H
+ * @Date: 2023-06-27 12:27:52
+ * @LastEditTime: 2023-06-29 18:57:06
+ * @Description: 下拉
 -->
 <template>
-  <div class="select" :class="[direction == 'column' ? 'flex-column' : '']">
-    <ul class="select-label" :class="[direction == 'column' ? 'mb15' : '']">
-      <li class="select-label-text">{{ label }}</li>
-      <li class="f14">
-        {{ getLabel(value) }}
-      </li>
-    </ul>
-
-    <div class="select-body">
-      <select-item v-for="(item, index) in data" v-bind="item" :key="index"></select-item>
-    </div>
-
-    <!-- <config-item :label='label'>
-      <div
-        class="mode-select"
-        :class="[direction=='column' ? 'flex-column' : '']"
-      >
-        <div class="mode-select-label">
-          {{data.find(v=>v.value==value).label}}
-        </div>
-
-
-      </div>
-    </config-item> -->
-  </div>
+  <control-config-warp :label="props.label">
+    <el-select v-model="mValue" class="w_100" placeholder="请选择">
+      <el-option v-for="(item, index) in props.options" :key="index" :label="item.label" :value="item.value" />
+    </el-select>
+  </control-config-warp>
 </template>
 
-<script>
-import schemaMixin from '@/mixin/schemaMixin';
-import SelectItem from './SelectItem';
+<script setup lang="ts">
+import { computed } from 'vue';
+import ControlConfigWarp from '../ControlConfigWarp.vue';
+// import useSchema from '@/hooks/useSchema';
 
-export default {
-  name: 'SchemaSelect',
+interface Props {
+  id?: any;
+  modelValue: any;
+  label: string;
+  options?: any;
+}
+const props = defineProps<Props>();
+// console.log(props);
+const emit = defineEmits(['update:modelValue']);
 
-  components: {
-    SelectItem,
+// let { mOptions } = useSchema({}, props);
+const mValue = computed({
+  get() {
+    return props.modelValue;
   },
-
-  mixins: [schemaMixin],
-
-  provide() {
-    return {
-      mode: this,
-    };
+  set(value) {
+    emit('update:modelValue', value);
   },
-
-  props: {
-    value: {
-      default: 0,
-    },
-    data: {
-      type: Array,
-    },
-  },
-
-  computed: {
-    direction() {
-      return this.data.length > 3 ? 'column' : 'row';
-    },
-  },
-
-  methods: {
-    getLabel(value) {
-      return this.data.find((v) => v.value == value)?.label || '暂无匹配';
-    },
-  },
-};
+});
 </script>
 
-<style lang="scss" scoped>
-.select {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  background: #fff;
-
-  .select-label {
-    display: flex;
-    align-items: center;
-
-    .select-label-text {
-      width: 70px;
-      color: #969799;
-      font-size: 13px;
-    }
-  }
-
-  .select-body {
-    display: flex;
-    flex-wrap: wrap;
-  }
-}
-
-.mode-select {
-  display: flex;
-  justify-content: space-between;
-
-  .mode-select-label {
-    font-size: 14px; /*no*/
-    line-height: 32px; /*no*/
-  }
-
-  .mode-select-body {
-    display: flex;
-    flex-wrap: wrap;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

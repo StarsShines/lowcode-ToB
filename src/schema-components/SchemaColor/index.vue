@@ -1,53 +1,40 @@
 <!--
- * @Description: What's this for
- * @Autor: WangYuan
- * @Date: 2021-09-24 09:11:38
- * @LastEditors: WangYuan
- * @LastEditTime: 2021-09-26 20:35:00
+ * @Author: M.H
+ * @Date: 2023-06-27 12:27:52
+ * @LastEditTime: 2023-06-27 18:41:11
+ * @Description: 请填写简介
 -->
 <template>
-  <config-item :label='label'>
-    <div
-      class="flex row-right"
-      style="width: calc(100% - 24px);"
-    >
-      <el-color-picker
-        v-model="mValue"
-        :predefine="predefineColors"
-        v-bind="mOptions"
-        show-alpha
-      ></el-color-picker>
-    </div>
-  </config-item>
+  <control-config-warp :label="props.label">
+    <el-color-picker v-model="mValue" :predefine="predefineColors" show-alpha></el-color-picker>
+  </control-config-warp>
 </template>
 
-<script>
-import schemaMixin from "@/mixin/schemaMixin";
-import ConfigColorPicker from "./ConfigColorPicker.vue";
+<script setup lang="ts">
+import { computed } from 'vue';
+import ControlConfigWarp from '../ControlConfigWarp.vue';
+// import useSchema from '@/hooks/useSchema';
 
-export default {
-  name: "SchemaColor",
+interface Props {
+  id?: any;
+  modelValue: any;
+  label: string;
+  options?: any;
+}
+const props = defineProps<Props>();
+const predefineColors: any = ['#ffffff', '#f5f5f5f5', '#F2F2F2', '#FF4444', '#FFCD00', '#3FBC87', '#5197FF', '#BADCFF', '#000000'];
 
-  mixins: [schemaMixin],
+const emit = defineEmits(['update:modelValue']);
 
-  components: {
-    ConfigColorPicker,
+// let { mOptions } = useSchema({}, props);
+const mValue = computed({
+  get() {
+    return props.modelValue;
   },
-
-  data() {
-    return {
-      predefineColors: [
-        "#ffffff",
-        "#f5f5f5f5",
-        "#F2F2F2",
-        "#FF4444",
-        "#FFCD00",
-        "#3FBC87",
-        "#5197FF",
-        "#BADCFF",
-        "#000000",
-      ],
-    };
+  set(value) {
+    emit('update:modelValue', value);
   },
-};
+});
 </script>
+
+<style lang="scss" scoped></style>

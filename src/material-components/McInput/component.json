@@ -1,0 +1,94 @@
+{
+  "name": "输入框",
+  "icon": "DocumentAdd",
+  "model": "single",
+  "fields": {
+    "curName": {
+      "label": "输入框配置",
+      "component": "input"
+    },
+    "styles": {
+      "label": "输入框样式",
+      "type": "object",
+      "child": {
+        "marginTop": {
+          "label": "上外间距",
+          "type": "number",
+          "value": 0
+        },
+        "marginBottom": {
+          "label": "下外间距",
+          "type": "number",
+          "value": 0
+        },
+        "marginLeft": {
+          "label": "左外间距",
+          "type": "number",
+          "value": 0
+        },
+        "marginRight": {
+          "label": "右外间距",
+          "type": "number",
+          "value": 0
+        },
+        "labelWidth": {
+          "label": "标题宽度",
+          "type": "number",
+          "value": 80
+        },
+        "inputWidth": {
+          "label": "输入框宽度",
+          "type": "string",
+          "value": "auto"
+        }
+      }
+    },
+    "options": {
+      "label": "配置",
+      "type": "object",
+      "child": {
+        "key": {
+          "label": "key",
+          "type": "string",
+          "value": "keyInput"
+        },
+        "value": {
+          "label": "默认值",
+          "type": "string",
+          "value": ""
+        },
+        "placeholder": {
+          "label": "占位文本",
+          "type": "string",
+          "value": "请输入"
+        },
+        "maxlength": {
+          "label": "最大长度",
+          "type": "string",
+          "value": ""
+        },
+        "disabled": {
+          "label": "是否禁用",
+          "type": "switch",
+          "value": false
+        },
+        "clearable": {
+          "label": "是否清除",
+          "type": "switch",
+          "value": false
+        },
+        "isLabel": {
+          "label": "是否展示label",
+          "type": "switch",
+          "value": false
+        },
+        "labelTitle": {
+          "label": "文本名称",
+          "type": "string",
+          "value": "label"
+        }
+      }
+    }
+  },
+  "group": ["basic"]
+}

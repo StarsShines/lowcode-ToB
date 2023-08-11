@@ -1,131 +1,91 @@
 <!--
- * @Description: tab组件
- * @Autor: WangYuan
- * @Date: 2021-05-21 19:13:20
- * @LastEditors: WangYuan
- * @LastEditTime: 2022-01-01 09:13:02
+ * @Author: M.H
+ * @Date: 2023-06-27 12:27:52
+ * @LastEditTime: 2023-07-22 17:30:47
+ * @Description: 请填写简介
 -->
 <template>
-  <div class="wrap" :style="$getStyle(styles)">
-    <div class="wrap-body" :style="getWrapStyle()">
-      <ul class="tabs" :style="getTabsStyle()">
-        <li
-          v-for="item in tabList"
-          :key="item.id"
-          class="tab-item"
-          :style="geItemStyle()"
-        >
-          <img
-            v-show="['image', 'image-text'].includes(attrs.type)"
-            class="tab-item-img"
-            :style="geItemImgStyle()"
-            :src="item.image || defaultIamge"
-          />
-          <span
-            v-show="['text', 'image-text'].includes(attrs.type)"
-            class="ellipsis-1"
-            >{{ item.label }}</span
-          >
-        </li>
-      </ul>
-    </div>
-  </div>
+  <el-tabs
+    :style="getMarginStyle()"
+    :tab-position="options.tabPosition"
+    :closable="options.closable"
+    v-model="currentName"
+    class="demo-tabs"
+    :type="options.card"
+    @tab-change="tabChangeFn"
+  >
+    <!-- <slot class="nest-nones"></slot> -->
+    <el-tab-pane :style="getPaddingStyle()" :label="item.label" :name="item.value" v-for="(item, index) in options.list" :key="index">
+      <slot class="nest-none" :name="currentName + 'group'"></slot>
+    </el-tab-pane>
+  </el-tabs>
 </template>
+<script setup lang="ts">
+import { watch } from 'vue';
+import { ControlModules } from '@/vuex/controlModule';
+import { getRandomCode } from '@/utils/utils';
 
-<script>
-export default {
-  name: 'McTab',
-
-  props: {
-    styles: {
-      type: Object,
-      default: () => {}
-    },
-    attrs: {
-      type: Object,
-      default: () => {}
-    },
-    tabList: {
-      type: Array,
-      default: () => []
-    }
-  },
-
-  data () {
-    return {
-      fixed: true,
-      defaultIamge:
-        'https://img01.yzcdn.cn/public_files/2019/03/05/2b60ed750a93a1bd6e17fc354c86fa78.png!large.webp'
-    }
-  },
-
-  computed: {
-    itemWidth () {
-      return (
-        (375 - this.styles.pagePadding * 2 - this.styles.imgPadding) /
-        this.attrs.max
-      )
-    }
-  },
-
-  methods: {
-    // 容器样式
-    getWrapStyle () {
-      return {
-        overflowX: this.attrs.model == 'fixed' ? 'hidden' : 'auto',
-        ...this.$getStyle(this.styles)
-      }
-    },
-
-    // tabs 样式
-    getTabsStyle () {
-      return {
-        width: this.$pxTorem(
-          this.itemWidth * this.tabList.length + this.styles.imgPadding
-        ),
-        padding: `0 ${this.$pxTorem(this.styles.imgPadding / 2)}`
-      }
-    },
-
-    // 单项样式
-    geItemStyle () {
-      return {
-        width: this.$pxTorem(this.itemWidth),
-        padding: this.$pxTorem(this.styles.imgPadding / 2),
-        color: this.styles.titleColor
-      }
-    },
-
-    // 单项图片样式
-    geItemImgStyle () {
-      return {
-        width: `${this.styles.imgWidth}%`,
-        borderRadius: this.$pxTorem(this.styles.imgRadius),
-        marginBottom: this.attrs.type == 'image-text' ? '5px' : 0
-      }
-    }
-  }
+interface Props {
+  styles?: any;
+  options?: any;
+  id?: string;
 }
+
+const { options = {}, styles = {}, id = '' } = defineProps<Props>();
+
+const currentName: number = $ref(0);
+
+let modules: any[] = $computed(() => {
+  return ControlModules.getters.getModules;
+});
+
+watch(
+  () => options.list,
+  () => {
+    modules.forEach((e) => {
+      if (e.id === id) {
+        e.childrens.push({
+          component: 'McContainer',
+          name: '容器',
+          icon: 'DocumentAdd',
+          model: 'single',
+          childrens: [],
+          styles: {
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+          },
+          id: getRandomCode(8),
+        });
+      }
+    });
+  },
+  { deep: true },
+);
+
+const getMarginStyle = () => {
+  return {
+    marginTop: styles.marginTop + 'px',
+    marginBottom: styles.marginBottom + 'px',
+    marginLeft: styles.marginLeft + 'px',
+    marginRight: styles.marginRight + 'px',
+  };
+};
+const getPaddingStyle = () => {
+  return {
+    paddingTop: styles.paddingTop + 'px',
+    paddingBottom: styles.paddingBottom + 'px',
+    paddingLeft: styles.paddingLeft + 'px',
+    paddingRight: styles.paddingRight + 'px',
+  };
+};
+
+const tabChangeFn = (val: any) => {
+  modules.forEach((e) => {
+    if (e.id === id) {
+      e.curSlot = val + 'group';
+    }
+  });
+};
 </script>
-
-<style lang="scss" scoped>
-.wrap {
-  .wrap-body {
-    &::-webkit-scrollbar {
-      display: none; /* Chrome Safari */
-    }
-
-    .tabs {
-      .tab-item {
-        display: inline-block;
-        text-align: center;
-
-        .tab-item-img {
-          height: 100%;
-          // margin-bottom: 10px;
-        }
-      }
-    }
-  }
-}
-</style>

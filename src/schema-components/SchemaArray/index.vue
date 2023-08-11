@@ -1,90 +1,70 @@
 <!--
- * @Description: What's this for
- * @Autor: WangYuan
- * @Date: 2021-09-24 09:11:38
- * @LastEditors: M.H
- * @LastEditTime: 2022-11-11 16:33:12
+ * @Description: 请填写简介
+-->
+<!--
+ * @Author: M.H
+ * @Date: 2023-06-27 12:27:52
+ * @LastEditTime: 2023-07-22 16:51:47
+ * @Description: 字符配置器
 -->
 <template>
-  <config-wrap :title="label">
-    <div class="mb10 f-grey f12">{{ mOptions.note }}</div>
-    <div class="nav">
-      <draggable v-model="mValue">
-        <!-- 编译模式,插槽可供自定义拖拽组件入容器 -->
-        <slot v-if="edit"></slot>
-
-        <!-- 非编译模式，根据schema子类遍历数组单项组件 -->
-        <template v-else>
-          <div v-for="item in mValue" :key="item.id" class="nav-item">
-            <component v-for="(val, key, index) in schema.child" :key="index" :is="typeToComponent[val.type]" v-model="item[key]" v-bind="val"> </component>
-            <div class="nav-delete" @click="delItem(item.id)">x</div>
-          </div>
-        </template>
-      </draggable>
-
-      <div class="nav-add" @click="addItem">新增数据</div>
+  <control-config-warp :label="props.label">
+    <div v-for="(item, index) in props.modelValue" :key="index">
+      <component :key="index" :is="GLOBAL_Schema_COMPONENTS[item.type]" v-model="item.label" v-bind="item" :schema="item"></component>
     </div>
-  </config-wrap>
+    <div class="positionRelative h35">
+      <el-button type="primary" class="btn-position" @click="addFn">
+        添加
+        <el-icon><Plus /> </el-icon
+      ></el-button>
+    </div>
+  </control-config-warp>
 </template>
 
-<script>
-import schemaMixin from '@/mixin/schemaMixin';
-import typeToComponent from '@/config/schema-template';
+<script setup lang="ts">
+import { computed, inject } from 'vue';
+import ControlConfigWarp from '../ControlConfigWarp.vue';
+import { ControlModules } from '@/vuex/controlModule';
+import { addTypeListFn } from '@/utils/addTypeList';
+const GLOBAL_Schema_COMPONENTS: any = inject('GLOBAL_Schema_COMPONENTS');
 
-export default {
-  name: 'SchemaArray',
+interface Props {
+  id?: any;
+  modelValue: any;
+  label: string;
+  options?: any;
+  schema?: any;
+}
+const props = defineProps<Props>();
+console.log(props, 'ppp');
+const emit = defineEmits(['update:modelValue']);
 
-  mixins: [schemaMixin],
-
-  props: {
-    label: {
-      type: String,
-      default: '',
-    },
-    edit: {
-      type: Boolean,
-      default: false,
-    },
-    schema: {
-      type: Object,
-      default: () => {},
-    },
+// let { mOptions } = useSchema({ placeholder: '请输入' }, props);
+const mValue = computed({
+  get() {
+    return props.modelValue;
   },
-
-  data() {
-    return {
-      typeToComponent,
-    };
+  set(value) {
+    emit('update:modelValue', value);
   },
+});
+const curComponent: any = $computed(() => {
+  return ControlModules.getters.getCurComponent;
+});
+const componentName = $ref(curComponent.component);
 
-  methods: {
-    addItem() {
-      console.log('...');
-      console.log(this.mValue);
-      if (this.mValue.length >= this.mOptions?.limit) {
-        this.$notify({
-          title: '无法新增',
-          message: `最多只能添加${this.mOptions?.limit}条数据`,
-          type: 'warning',
-        });
-        return;
-      }
-
-      this.mValue.push({
-        id: this.$getRandomCode(6),
-      });
-    },
-
-    delItem(id) {
-      let i = this.mValue.findIndex((item) => item.id == id);
-      this.mValue.splice(i, 1);
-    },
-  },
+const addFn = () => {
+  let obj = addTypeListFn(componentName, props.modelValue);
+  props.modelValue.push(obj);
 };
 </script>
-
 <style lang="scss" scoped>
-::v-deep .config-item {
-  margin-bottom: 10px !important;
+.h35 {
+  height: 35px;
+  .btn-position {
+    margin-top: 10px;
+    position: absolute;
+    right: 10px;
+  }
 }
 </style>

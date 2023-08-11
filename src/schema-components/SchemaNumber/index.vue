@@ -1,9 +1,8 @@
 <!--
- * @Description: What's this for
- * @Autor: WangYuan
- * @Date: 2021-09-24 09:11:38
- * @LastEditors: M.H
- * @LastEditTime: 2022-11-11 17:41:56
+ * @Author: M.H
+ * @Date: 2023-06-27 12:27:52
+ * @LastEditTime: 2023-06-27 18:24:47
+ * @Description: 数字配置器
 -->
 <template>
   <control-config-warp :label="props.label">
@@ -22,9 +21,10 @@ interface Props {
   options?: any;
 }
 const props = defineProps<Props>();
+// console.log(props, 'peo');
 const emit = defineEmits(['update:modelValue']);
 
-let { mOptions } = useSchema({ max: 100 }, props);
+let { mOptions } = useSchema({ max: 1000 }, props);
 const mValue = computed({
   get() {
     return props.modelValue;

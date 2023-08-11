@@ -46,7 +46,8 @@ const { label = '', line = false } = defineProps<Props>();
   }
 
   .wrap-body {
-    padding: 20px 20px 10px 20px; /*no*/
+    box-sizing: content-box;
+    padding: 5px 20px; /*no*/
 
     .wrap-line {
       margin-top: 30px;
